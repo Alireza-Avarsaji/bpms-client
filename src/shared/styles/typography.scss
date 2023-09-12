@@ -1,0 +1,134 @@
+@import "./fonts.scss";
+
+.hero-text {
+  @include ESTEDAD_BOLD;
+  font-size: 2.5rem;
+  line-height: 1.5;
+}
+
+.title-1 {
+  @include ESTEDAD_BOLD;
+  font-size: 2rem;
+  line-height: 1.5;
+}
+
+.title-hero {
+  @include ESTEDAD_BOLD;
+  font-size: 3.5rem;
+  line-height: 1.5;
+}
+
+.title-2 {
+  @include ESTEDAD_BOLD;
+  font-size: 1.5rem;
+  line-height: 1.5;
+}
+
+.title-3 {
+  @include ESTEDAD_BOLD;
+  font-size: 1.25rem;
+  line-height: 1.7;
+}
+
+.title-4 {
+  @include ESTEDAD_BOLD;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.title-5 {
+  @include ESTEDAD_MEDIUM;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.title-6 {
+  @include ESTEDAD_REGULAR;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+
+
+.body-copy-strong {
+  @include ESTEDAD_SEMI_BOLD;
+  font-size: 1rem;
+  line-height: 2;
+}
+
+.body-copy-regular {
+  @include ESTEDAD_REGULAR;
+  font-size: 1rem;
+  line-height: 2;
+}
+
+.body-copy-light {
+  @include ESTEDAD_LIGHT;
+  font-size: 1rem;
+  line-height: 2;
+}
+
+.small-copy-strong {
+  @include ESTEDAD_SEMI_BOLD;
+  font-size: 0.875rem;
+  line-height: 2;
+}
+
+.small-copy-medium {
+  @include ESTEDAD_SEMI_BOLD;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 2;
+}
+
+.small-copy-regular {
+  @include ESTEDAD_REGULAR;
+  font-size: 0.875rem;
+  line-height: 2;
+}
+
+.caption-strong {
+  @include ESTEDAD_SEMI_BOLD;
+  font-size: 0.75rem;
+  line-height: 2;
+}
+
+.caption {
+  @include ESTEDAD_REGULAR;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.caption-medium {
+  @include ESTEDAD_MEDIUM;
+  font-size: 0.75rem;
+  line-height: 2;
+}
+
+.caption-regular {
+  @include ESTEDAD_REGULAR;
+  font-size: 0.7rem;
+  line-height: 2.2;
+}
+
+.text-button {
+  @include ESTEDAD_MEDIUM;
+  font-size: 0.875rem;
+  line-height: 2;
+}
+
+.link-button {
+  @include ESTEDAD_MEDIUM;
+  font-size: 0.875rem;
+  line-height: 2;
+  text-decoration: underline;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+
+.font-9{
+  font-size: 0.9rem;
+}

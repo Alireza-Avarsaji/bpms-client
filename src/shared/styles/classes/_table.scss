@@ -1,0 +1,87 @@
+@use "../abstracts/colors" as *;
+
+// ? table section style
+.full-screen-table {
+    padding: 0 !important;
+    top: 0;
+    right: 0;
+    position: fixed;
+    width: 100vw;
+    height: 100vh !important;
+}
+
+//? Table Classes
+.table-container {
+    &::-webkit-scrollbar-thumb {
+        background-color: setColor(primary, shade-90);
+        border-radius: 4px !important;
+    }
+    max-height: calc(100% - 101px);
+    // border-radius: 0px 0px 3px 3px !important;
+
+    table {
+        th{
+            text-align: right !important;
+        }
+        overflow-x: scroll !important;
+        overflow-y: auto !important;
+        z-index: 10 !important;
+        width: 100% !important;
+        tr {
+            &:hover {
+                background-color: setColor(system_color, gray-3);
+            }
+        }
+        thead {
+            width: 100%;
+
+            th {
+                cursor: default !important;
+            }
+
+            position: sticky;
+            top: 0px;
+            z-index: 10;
+        }
+        th,
+        td {
+            min-width: 160px;
+            max-width: 220px;
+            text-align: center !important;
+            padding: 0 !important;
+            font-size: 12px !important;
+            cursor: pointer !important;
+        }
+        th {
+            position: sticky !important;
+            top: 0px !important;
+            z-index: 10 !important;
+            max-width: 100% !important;
+            background-color: setColor(system_color, gray-3);
+        }
+        tr {
+            max-height: 48px !important;
+            border-collapse: collapse !important;
+        }
+    }
+
+    // th.mat-header-cell:first-of-type:not(:only-of-type),
+    // [dir="rtl"] td.mat-cell:first-of-type:not(:only-of-type),
+    // [dir="rtl"] td.mat-footer-cell:first-of-type:not(:only-of-type) {
+    //     padding: 0px;
+    // }
+
+    // table::-webkit-scrollbar {
+    //     height: 10px;
+    // }
+
+    // .mat-header-cell {
+    //     color: setColor(system_color, black);
+    //     padding: 0 12px !important;
+    // }
+}
+
+//? For Table Header
+.mat-elevation-z8 {
+    position: relative !important;
+}

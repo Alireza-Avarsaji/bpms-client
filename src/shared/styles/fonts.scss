@@ -1,0 +1,43 @@
+// ? Light
+@font-face {
+    font-family: ESTEDAD_LIGHT;
+    src: url("../../assets/font/Estedad-Light.woff2") format("woff2");
+}
+@mixin ESTEDAD_LIGHT {
+    font-family: ESTEDAD_LIGHT !important;
+}
+
+// ? Regular
+@font-face {
+    font-family: ESTEDAD_REGULAR;
+    src: url("../../assets/font/Estedad-Regular.woff2") format("woff2");
+}
+@mixin ESTEDAD_REGULAR {
+    font-family: ESTEDAD_REGULAR !important;
+}
+
+// ? Medium
+@font-face {
+    font-family: ESTEDAD_MEDIUM;
+    src: url("../../assets/font/Estedad-Medium.woff2") format("woff2");
+}
+@mixin ESTEDAD_MEDIUM {
+    font-family: ESTEDAD_MEDIUM !important;
+}
+
+// ? Bold
+@font-face {
+    font-family: ESTEDAD_BOLD;
+    src: url("../../assets/font/Estedad-Bold.woff2") format("woff2");
+}
+@mixin ESTEDAD_BOLD {
+    font-family: ESTEDAD_BOLD !important;
+}
+// ? Semi Bold
+@font-face {
+    font-family: ESTEDAD_SEMI_BOLD;
+    src: url("../../assets/font/Estedad-SemiBold.woff2") format("woff2");
+}
+@mixin ESTEDAD_SEMI_BOLD {
+    font-family: ESTEDAD_SEMI_BOLD !important;
+}

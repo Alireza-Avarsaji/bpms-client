@@ -1,0 +1,38 @@
+
+<form [formGroup]="form" class="col-12 d-flex flex-wrap justify-content-between align-content-start">
+
+    <mat-form-field class="col-12" appearance="outline">
+        <mat-label>عنوان</mat-label>
+        <input formControlName="key" matInput placeholder="عنوان" autofocus type="text">
+        <mat-error>وارد کردن عنوان الزامی است</mat-error>
+    </mat-form-field>
+
+    <div class="col-12 d-flex flex-wrap align-items-center mb-5" style="color: gray;">
+
+        <mat-icon class="" style="font-size: 24px;">description</mat-icon>
+        <span class="">فایل بارگذاری شده توسط کاربر</span>
+
+    </div>
+
+    <label class="col-12 neutral_variant__shade-10 mb-3">تنظیمات</label>
+    <div formGroupName="validations" class="col-12 d-flex flex-wrap justify-content-between align-content-center align-items-center mb-2">
+        <mat-form-field class="ms-3" appearance="outline">
+            <mat-label>بیشترین حجم فایل</mat-label>
+            <input formControlName="maxSize" matInput autofocus type="text">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>فرمت فایل</mat-label>
+            <mat-select formControlName="extension">
+                <mat-option *ngFor="let f of fileFormats" [value]="f">
+                    {{f}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div class="col-12 d-flex justify-content-end">
+            <mat-slide-toggle formControlName="isRequired">الزامی</mat-slide-toggle>
+        </div>
+    </div>
+    
+
+</form>

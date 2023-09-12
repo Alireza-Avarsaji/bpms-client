@@ -1,0 +1,19 @@
+@use "../abstracts/colors" as *;
+@use "../abstracts/variables" as *;
+
+
+
+//! Colors Class
+@each $color, $shades in $colors {
+    @each $shade, $value in $shades {
+        //   * Color Classes
+        .#{"" + $color}__#{"" + $shade} {
+            color: #{"" + $value} !important;
+        }
+
+        //   * Background Classes
+        .bg-#{"" + $color}__#{"" + $shade} {
+            background-color: #{"" + $value} !important;
+        }
+    }
+}

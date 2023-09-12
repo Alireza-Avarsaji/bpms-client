@@ -1,0 +1,73 @@
+@use "../../../shared/styles/abstracts/colors" as *;
+@use "../../../shared/styles/classes/generator_class" as *;
+@use "../../../shared/styles/abstracts/variables" as *;
+
+
+section {
+    background-color: white !important;
+}
+
+
+::ng-deep {
+    .mat-mini-fab .mat-button-wrapper {
+        padding: 0px;
+    }
+
+    .mat-select-panel:not([class*="mat-elevation-z"]) {
+        padding: 10px !important;
+    }
+
+    .mat-pseudo-checkbox-checked,
+    .mat-pseudo-checkbox-indeterminate,
+    .mat-accent .mat-pseudo-checkbox-checked,
+    .mat-accent .mat-pseudo-checkbox-indeterminate {
+        background-color: setColor(secondary, default);
+    }
+
+    .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
+    .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+        background-color: setColor(secondary, default);
+    }
+}
+
+.box {
+    width: 160px;
+    border-radius: 28px;
+    border: 1px solid rgba(0, 0, 0, 0.24);
+    line-height: 1.5;
+    padding: 5px 9px;
+
+    &:hover {
+        border-color: setColor(system_color, black) !important;
+    }
+
+    input,
+    mat-select {
+        border: none !important;
+        background: transparent !important;
+        font-weight: 400 !important;
+        line-height: 28px !important;
+        letter-spacing: 0.00937em !important;
+        text-decoration: inherit !important;
+        text-transform: inherit !important;
+        color: rgba(0, 0, 0, 0.87) !important;
+        outline: 0 !important;
+        opacity: 0.6 !important;
+    }
+
+    span {
+        font-weight: 400;
+        line-height: 28px;
+        letter-spacing: 0.00937em;
+        text-decoration: inherit;
+        text-transform: inherit;
+        color: rgba(0, 0, 0, 0.87);
+        outline: 0;
+        width: 11rem;
+    }
+
+    ::ng-deep .mat-select-value {
+        color: setColor(system_color, gray-3) !important;
+    }
+}
+

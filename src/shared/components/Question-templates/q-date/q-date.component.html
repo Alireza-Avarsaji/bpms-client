@@ -1,0 +1,34 @@
+<form [formGroup]="form" class="col-12 d-flex flex-wrap justify-content-between align-content-start">
+
+    <mat-form-field class="col-12" appearance="outline">
+        <mat-label>عنوان</mat-label>
+        <input formControlName="key" matInput placeholder="عنوان" autofocus type="text">
+        <mat-error>وارد کردن عنوان الزامی است</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col-12 p-0 mb-3">
+        <mat-label class="col-12 p-0 text-right">پاسخ کاربر</mat-label>
+        <input [disabled]="true" class="col-8" matInput [matDatepicker]="date">
+        <mat-datepicker-toggle matIconSuffix [for]="date"></mat-datepicker-toggle>
+        <mat-datepicker #date></mat-datepicker>
+    </mat-form-field>
+
+
+    <label class="col-12 neutral_variant__shade-10 mb-3">تنظیمات</label>
+    <div formGroupName="validations" class="col-12 d-flex flex-wrap justify-content-between align-content-center align-items-center mb-2">
+        <mat-form-field appearance="outline">
+            <input formControlName="max" class="col-8" matInput [matDatepicker]="from" placeholder="از">
+            <mat-datepicker-toggle matIconSuffix [for]="from"></mat-datepicker-toggle>
+            <mat-datepicker #from></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <input formControlName="min" matInput [matDatepicker]="to" placeholder="تا">
+            <mat-datepicker-toggle matIconSuffix [for]="to"></mat-datepicker-toggle>
+            <mat-datepicker #to></mat-datepicker>
+        </mat-form-field>
+        <div class="col-12 d-flex justify-content-end">
+            <mat-slide-toggle formControlName="isRequired">الزامی</mat-slide-toggle>
+        </div>
+    </div>
+
+</form>

@@ -1,0 +1,23 @@
+<section class="d-flex flex-wrap col-12 justify-content-end align-items-center mx-0 p-0">
+    <div class="d-flex flex-wrap justify-content-start align-items-center mx-0 p-0">
+
+        <button mat-icon-button [disabled]="currentPage == 0"
+            class="d-flex flex-wrap justify-content-center d-flex align-content-center mx-0 p-0 ml-2 primary__default"
+            (click)="previousPage()">
+            <mat-icon>chevron_right</mat-icon>
+        </button>
+
+        <div class="d-flex flex-wrap justify-content-center align-items-center mx-0 p-0 primary__default">
+            <span>{{currentPage + 1}}</span>
+            <span class="mx-1">/</span>
+            <span>{{totalPages}}</span>
+        </div>
+
+        <button mat-icon-button [disabled]="currentPage+1 == totalPages"
+            class="d-flex flex-wrap justify-content-center d-flex align-content-center mx-0 p-0 mr-2 primary__default"
+            (click)="nextPage()">
+            <mat-icon>chevron_left</mat-icon>
+        </button>
+
+    </div>
+</section>

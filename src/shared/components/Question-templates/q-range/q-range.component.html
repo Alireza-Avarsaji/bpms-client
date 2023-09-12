@@ -1,0 +1,28 @@
+<form [formGroup]="form" class="col-12 d-flex flex-wrap justify-content-between align-content-start">
+
+    <mat-form-field class="col-12" appearance="outline">
+        <mat-label>عنوان</mat-label>
+        <input formControlName="key" matInput placeholder="عنوان" autofocus type="text">
+        <mat-error>وارد کردن عنوان الزامی است</mat-error>
+    </mat-form-field>
+
+    <mat-slider [disabled]="true" [min]="100" [max]="500">
+        <input [value]="150" matSliderStartThumb>
+        <input [value]="400" matSliderEndThumb>
+    </mat-slider>
+    
+
+    <label class="col-12 neutral_variant__shade-10 mb-3">تنظیمات</label>
+    <div formGroupName="validations" class="col-12 d-flex flex-wrap justify-content-between align-content-center align-items-center mb-2">
+        <mat-form-field appearance="outline">
+            <input formControlName="max" matInput placeholder="حد بالا" type="text">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <input formControlName="min" matInput placeholder="حد پایین" type="text">
+        </mat-form-field>
+        <div class="col-12 d-flex justify-content-end">
+            <mat-slide-toggle formControlName="isRequired">الزامی</mat-slide-toggle>
+        </div>
+    </div>
+
+</form>

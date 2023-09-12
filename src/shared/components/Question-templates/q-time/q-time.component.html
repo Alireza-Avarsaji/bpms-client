@@ -1,0 +1,69 @@
+<form [formGroup]="form" class="col-12 d-flex flex-wrap justify-content-between align-content-start">
+
+    <mat-form-field class="col-12" appearance="outline">
+        <mat-label>عنوان</mat-label>
+        <input formControlName="key" matInput placeholder="عنوان" autofocus type="text">
+        <mat-error>وارد کردن عنوان الزامی است</mat-error>
+    </mat-form-field>
+
+    <div class="col-12 d-flex align-items-center">
+        <mat-form-field class="" appearance="fill">
+            <mat-select [disabled]="true" placeholder="(پاسخ کاربر) ساعت">
+            </mat-select>
+        </mat-form-field>
+
+        <span class="neutral_variant__shade-10 body-copy-strong mx-3">:</span>
+
+        <mat-form-field class="" appearance="fill">
+            <mat-select [disabled]="true" placeholder="(پاسخ کاربر) دقیقه">
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <label class="col-12 neutral_variant__shade-10 mb-3">تنظیمات</label>
+    <div formGroupName="validations" class="col-12 d-flex flex-wrap justify-content-between align-content-center align-items-center">
+
+        <label class="neutral_variant__shade-10 px-3 mb-3" for="">بیشترین مقدار</label>
+        <div class="col-12 d-flex flex-wrap justify-content-start">
+            <mat-form-field class="ms-3" appearance="outline">
+                <mat-select formControlName="maxH" placeholder="ساعت">
+                    <mat-option *ngFor="let h of hours" [value]="h">
+                        {{h}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-select formControlName="maxM" placeholder="دقیقه">
+                    <mat-option *ngFor="let m of minutes" [value]="m">
+                        {{m}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <label class="neutral_variant__shade-10 px-3 mb-3" for="">کمترین مقدار</label>
+        <div class="col-12 d-flex flex-wrap justify-content-start">
+            <mat-form-field class="ms-3" appearance="outline">
+                <mat-select formControlName="minH" placeholder="ساعت">
+                    <mat-option *ngFor="let h of hours" [value]="h">
+                        {{h}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+
+                <mat-select formControlName="minM" placeholder="دقیقه">
+                    <mat-option *ngFor="let m of minutes" [value]="m">
+                        {{m}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 d-flex justify-content-end">
+            <mat-slide-toggle formControlName="isRequired">الزامی</mat-slide-toggle>
+        </div>
+
+    </div>
+
+</form>

@@ -1,0 +1,28 @@
+.add-btn {
+    position: fixed;
+    bottom: 35px;
+    right: 35px;
+}
+
+// ? for mat menu
+::ng-deep {
+    .cdk-overlay-connected-position-bounding-box {
+        width: unset;
+    }
+
+    .mat-mdc-menu-item .mdc-list-item__primary-text {
+        width: 100%;
+    }
+
+    .mat-mdc-menu-panel.mat-mdc-menu-panel {
+        width: 250px;
+    }
+
+    .mat-mdc-menu-item .mat-icon {
+        margin: 0px !important;
+    }
+
+    .mat-mdc-menu-item .mat-mdc-menu-ripple {
+        cursor: pointer !important;
+    }
+}
