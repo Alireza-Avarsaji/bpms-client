@@ -1,4 +1,4 @@
-import * as AppState from '../../../../state/app.state';
+import * as AppState from '../../../../core/state/app.state';
 import { QuestionTypesEnum } from "src/shared/models/question.model";
 
 export class FormBasedQuestion<T> {

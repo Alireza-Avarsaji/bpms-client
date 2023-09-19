@@ -1,13 +1,29 @@
-import { FormBasedQuestion } from "src/app/layout/form/create-form/state/form.state.model";
 
-export class QuestionModel {
+export class FormModel {
     id: string = '';
     title: string = '';
     hint: string = '';
-    questions: SubQuestionModel[] = [];
+    questions: QuestionModel[] = [];
 }
 
-export class SubQuestionModel {
+export class FormBasedQuestion<T> {
+    id: string = '';
+    type!: QuestionTypesEnum;
+    key: string = '';
+    values?: string[];
+    validations?: T;
+    isValid: boolean = false;
+
+    constructor(id?: string, type?: QuestionTypesEnum, key?: string, values?: string[], validations?: T) {
+        this.id = id!;
+        this.type = type!;
+        this.key = key!;
+        this.values = values!;
+        this.validations = validations!;
+    }
+}
+
+export class QuestionModel {
     id!: string;
     key!: string;
     type!: QuestionTypesEnum;

@@ -6,7 +6,7 @@ import { Component, Signal, signal } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'bpms-admin';
+  title = 'bpms-client';
 
   
 

@@ -8,7 +8,7 @@
       "type": "chrome",
       "request": "launch",
       "preLaunchTask": "npm: start",
-      "url": "http://localhost:4205/"
+      "url": "http://localhost:4208/"
     },
     {
       "name": "ng test",

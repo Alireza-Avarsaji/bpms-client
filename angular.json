@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "bpms-admin": {
+    "bpms-client": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/bpms-admin",
+            "outputPath": "dist/bpms-client",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -67,14 +67,14 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "port": 4205
+            "port": 4208
           },
           "configurations": {
             "production": {
-              "browserTarget": "bpms-admin:build:production"
+              "browserTarget": "bpms-client:build:production"
             },
             "development": {
-              "browserTarget": "bpms-admin:build:development"
+              "browserTarget": "bpms-client:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -82,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "bpms-admin:build"
+            "browserTarget": "bpms-client:build"
           }
         },
         "test": {

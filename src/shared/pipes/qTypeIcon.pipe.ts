@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { QuestionTypesEnum } from 'src/shared/models/question.model';
+import { QuestionTypesEnum } from 'src/app/features/form/models/form.model';
 
 
 @Pipe({ name: 'qTypeIcon' })

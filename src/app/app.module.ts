@@ -11,14 +11,9 @@ import { HttpClientModule } from '@angular/common/http';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'layout',
-    pathMatch: 'full'
-  },
-  {
-    path: 'layout',
-    loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule)
+    loadChildren: () => import('./features/features.module').then(m => m.FeaturesModule)
   }
-]
+];
 
 @NgModule({
   declarations: [
