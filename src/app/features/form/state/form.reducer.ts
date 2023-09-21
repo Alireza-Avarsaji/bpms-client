@@ -14,11 +14,31 @@ const initialState: IFormState = {
 
 export const formReducer = createReducer(initialState,
 
+    // ? fill allForms data
+    on(
+        FormActions.loadFormsSuccess,
+        (state, action) => {
+            return {
+                ...state,
+                allForms: action.result.items
+            }
+        }
+    ),
+
+    // ? handle allForms error
+    on(
+        FormActions.loadFormsError,
+        (state) => {
+            return {
+                ...state,
+                allForms: []
+            }
+        }
+    ),
 
 
 
 
-
-);
+)
 
 

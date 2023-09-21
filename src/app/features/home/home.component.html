@@ -1,7 +1,11 @@
-<section class="h-100 w-100 d-flex flex-wrap justify-content-center align-content-center bg-system_color__gray-6">
-    <article class="d-flex col-12 col-md-11 col-lg-10 col-xl-9 flex-wrap justify-content-between align-content-start">
-        <div class="col-3 form-card bg-system_color__white-2 mx-2 mb-5" *ngFor="let form of [1,2,23,3,34,4,4,4,45,5,5]">
-            'salam whoeufgh'
-        </div>
+<section class="h-100 w-100 d-flex flex-wrap justify-content-center align-content-start bg-system_color__gray-6 p-5">
+    <article class="d-flex col-12 col-md-11 col-lg-10 col-xl-9 flex-wrap justify-content-start align-content-start">
+        <ng-container *ngIf="forms$ | async as forms">
+            <div class="col-4 p-2" *ngFor="let form of forms">
+                <div class="col-12 d-flex flex-wrap align-content-center justify-content-center form-card bg-system_color__white-2 mx-2 mb-5" [routerLink]="['/form', form.id]">
+                    <span class="text-center body-copy-strong pointer">{{form.title}}</span>
+                </div>
+            </div>
+        </ng-container>
     </article>
 </section>

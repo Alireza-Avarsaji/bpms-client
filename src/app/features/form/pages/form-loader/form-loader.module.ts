@@ -5,7 +5,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { SharedModule } from 'src/shared/shared.module';
 import { FormLoaderComponent } from './form-loader.component';
-
+import {MatStepperModule} from '@angular/material/stepper';
+import { QTextComponent } from 'src/shared/components/Question-templates/q-text/q-text.component';
 
 
 const routes: Routes = [
@@ -25,6 +26,8 @@ const routes: Routes = [
         MatButtonModule,
         ReactiveFormsModule,
         NgxSkeletonLoaderModule,
+        MatStepperModule,
+        QTextComponent
     ],
     providers: [],
 })

@@ -5,8 +5,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { QTextValidationModel } from './q-text.models';
 import { Subscription } from 'rxjs';
-import { FormBasedQuestion } from 'src/app/layout/form/create-form/state/form.state.model';
 import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
+import { FormBasedQuestion } from 'src/app/features/form/models/form.model';
 
 @Component({
   selector: 'app-q-text',
