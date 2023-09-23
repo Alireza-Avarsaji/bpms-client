@@ -15,16 +15,31 @@ export class FormEffects {
         () => {
             const pageFilter = new PageFilterModel();
             return this.actions$.pipe(
-                ofType(FormActions.loadForms),
+                ofType(FormActions.loadAllForms),
                 switchMap(() =>
                     this.formService.getformsByFilter(pageFilter, '').pipe(
                         map(res => {
-                            return FormActions.loadFormsSuccess(res);
+                            return FormActions.loadAllFormsSuccess(res);
                         }),
-                        catchError(err => of(FormActions.loadFormsError({ errorMessage: 'خطا در دریافت اطلاعات' })))
+                        catchError(err => of(FormActions.loadAllFormsError({ errorMessage: 'خطا در دریافت اطلاعات' })))
                     )
                 )
             )
+        }
+    );
+
+
+    getFormById$ = createEffect(
+        () => {
+            return this.actions$.pipe(
+                ofType(FormActions.loadFormById),
+                switchMap(action => this.formService.getFormById(action.id).pipe(
+                    map(res => {
+                        return FormActions.loadFormByIdSuccess({form: res.result})
+                    }),
+                    catchError(err => of(FormActions.loadFormByIdError({ errorMessage: 'خطا در دریافت اطلاعات' })))
+                ))
+            );
         }
     );
 }

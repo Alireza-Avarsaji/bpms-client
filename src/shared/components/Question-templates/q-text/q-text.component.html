@@ -1,18 +1,13 @@
 <form [formGroup]="form" class="col-12 d-flex flex-wrap justify-content-between align-content-start">
 
-    <mat-form-field class="col-12 mb-3"  appearance="outline">
-        <mat-label>عنوان</mat-label>
-        <input formControlName="key" matInput placeholder="عنوان" autofocus type="text">
-        <mat-error>وارد کردن عنوان الزامی است</mat-error>
-    </mat-form-field>
-
+    
+    
+    <p class="mb-4">{{questionData.key!}}</p>
     <mat-form-field class="col-12 mb-4" appearance="fill">
-        <mat-label>پاسخ کاربر</mat-label>
-        <input [disabled]="true" matInput placeholder="پاسخ کاربر" type="text">
+        <input  matInput placeholder="پاسخ کاربر" type="text">
     </mat-form-field>
     
-    <label class="neutral_variant__shade-10 mb-3">تنظیمات</label>
-    <div formGroupName="validations" class="col-12 d-flex flex-wrap justify-content-between align-content-center align-items-center mb-2">
+    <!-- <div formGroupName="validations" class="col-12 d-flex flex-wrap justify-content-between align-content-center align-items-center mb-2">
         <mat-form-field  appearance="outline">
             <mat-label>بیشترین مقدار</mat-label>
             <input formControlName="max" matInput placeholder="بیشترین مقدار" type="text">
@@ -28,7 +23,7 @@
         <div class="col-12 d-flex justify-content-end">
             <mat-slide-toggle formControlName="isRequired">الزامی</mat-slide-toggle>
         </div>
-    </div>
+    </div> -->
 
 
 </form>

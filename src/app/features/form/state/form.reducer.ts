@@ -1,22 +1,20 @@
 import { createReducer, on } from "@ngrx/store";
 import { IFormState } from "./form.state.model";
 import * as FormActions from './form.actions'
+import { FormModel } from "../models/form.model";
 
 
 const initialState: IFormState = {
     title: '',
     allForms: [],
-    currentForm: {
-        title: '',
-        formBasedQuestions: []
-    }
+    currentForm: new FormModel()
 }
 
 export const formReducer = createReducer(initialState,
 
     // ? fill allForms data
     on(
-        FormActions.loadFormsSuccess,
+        FormActions.loadAllFormsSuccess,
         (state, action) => {
             return {
                 ...state,
@@ -27,7 +25,29 @@ export const formReducer = createReducer(initialState,
 
     // ? handle allForms error
     on(
-        FormActions.loadFormsError,
+        FormActions.loadAllFormsError,
+        (state) => {
+            return {
+                ...state,
+                allForms: []
+            }
+        }
+    ),
+
+    // ? load current form 
+    on(
+        FormActions.loadFormByIdSuccess,
+        (state, action) => {
+            return {
+                ...state,
+                currentForm: action.form
+            }
+        }
+    ),
+
+    // ? handle loadForm error
+    on(
+        FormActions.loadFormByIdError,
         (state) => {
             return {
                 ...state,

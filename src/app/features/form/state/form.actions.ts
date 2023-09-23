@@ -3,21 +3,36 @@ import { TSResult } from "src/shared/models/result-model/TServiceResult";
 import { PageList } from "src/shared/models/result-model/pageList.model";
 import { FormModel } from "../models/form.model";
 
-export const loadForms = createAction(
-    '[Form] loadForms'
+export const loadAllForms = createAction(
+    '[Form] loadAllForms'
 );
 
-export const loadFormsSuccess = createAction(
-    '[Form] loadFormsSuccess',
+export const loadAllFormsSuccess = createAction(
+    '[Form] loadAllFormsSuccess',
     props<TSResult<PageList<FormModel>>>()
 );
 
-export const loadFormsError = createAction(
-    '[Form] loadFormsError',
+export const loadAllFormsError = createAction(
+    '[Form] loadAllFormsError',
     props<{ errorMessage: string }>()
 );
 
 export const NavigateToForm = createAction(
     '[Form] NavigateToForm',
     props<{ title: string }>()
+);
+
+export const loadFormById = createAction(
+    '[form] loadFormById',
+    props<{id: string}>()
+);
+
+export const loadFormByIdSuccess = createAction(
+    '[form] loadFormByIdSuccess',
+    props<{form: FormModel}>()
+);
+
+export const loadFormByIdError = createAction(
+    '[form] loadFormByIdError',
+    props<{ errorMessage: string }>()
 );

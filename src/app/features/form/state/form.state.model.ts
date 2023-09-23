@@ -5,10 +5,7 @@ import { FormBasedQuestion, FormModel } from '../models/form.model';
 export interface IFormState {
     title: string;
     allForms: FormModel[];
-    currentForm: {
-        title: string;
-        formBasedQuestions: FormBasedQuestion<any>[];
-    }
+    currentForm: FormModel;
 }
 
 // ? redefine the main state interface for handling lazy loading

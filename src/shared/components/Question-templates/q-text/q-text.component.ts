@@ -6,7 +6,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { QTextValidationModel } from './q-text.models';
 import { Subscription } from 'rxjs';
 import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
-import { FormBasedQuestion } from 'src/app/features/form/models/form.model';
+import { FormBasedQuestion, QuestionModel, ValidationTypeEnum } from 'src/app/features/form/models/form.model';
 
 @Component({
   selector: 'app-q-text',
@@ -22,33 +22,45 @@ import { FormBasedQuestion } from 'src/app/features/form/models/form.model';
 })
 export class QTextComponent implements OnInit, OnDestroy {
 
-  @Input() data!: FormBasedQuestion<QTextValidationModel>;
+  @Input() questionData!: QuestionModel;
   @Output() valueChanged = new EventEmitter<FormBasedQuestion<QTextValidationModel>>();
 
   form!: FormGroup;
   subscription!: Subscription;
 
-  constructor(private fb: FormBuilder, private checkTruthyPipe: CheckTruthyPipe) {}
+  constructor(private fb: FormBuilder, private checkTruthyPipe: CheckTruthyPipe) { }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.initForm();
-    this.subscription = this.form.valueChanges.subscribe(value => {
-      this.onValueChanged(value as FormBasedQuestion<QTextValidationModel>);
-    });
+    this.setValidations();
+    // this.subscription = this.form.valueChanges.subscribe(value => {
+    //   this.onValueChanged(value as FormBasedQuestion<QTextValidationModel>);
+    // });
   }
 
   initForm() {
     this.form = this.fb.group({
-      id: new FormControl(this.data.id ?? null),
-      type: new FormControl(this.data.type ?? null),
-      key: new FormControl(this.data.key ?? null, [Validators.required]),
-      validations: this.fb.group({
-        isRequired: new FormControl(this.checkTruthyPipe.transform(this.data.validations?.isRequired)),
-        max: new FormControl(this.data.validations?.max ?? null),
-        min: new FormControl(this.data.validations?.min ?? null),
-        regex: new FormControl(this.data.validations?.regex ?? null),
-      })
+      answer: new FormControl(null)
     });
+  }
+
+  setValidations() {
+    const validations = [];
+    for (const validation of this.questionData.validations) {
+      switch (validation.type) {
+        case ValidationTypeEnum.max:
+          validations.push(Validators.maxLength(+validation.value));
+          break;
+        case ValidationTypeEnum.min:
+          validations.push(Validators.minLength(+validation.value));
+          break;
+        case ValidationTypeEnum.regex:
+          validations.push(Validators.pattern(validation.value))
+          break;
+        default: continue;
+      }
+    }
+    this.form.get('answer')?.addValidators(validations);
   }
 
   // ? emits new value to parent component

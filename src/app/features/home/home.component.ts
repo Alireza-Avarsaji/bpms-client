@@ -4,7 +4,7 @@ import { State } from '../form/state/form.state.model';
 import { Observable } from 'rxjs';
 import { FormModel } from '../form/models/form.model';
 import { getAllForms } from '../form/state/form.selectors';
-import { loadForms } from '../form/state/form.actions';
+import { loadAllForms } from '../form/state/form.actions';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.store.dispatch(loadForms());
+    this.store.dispatch(loadAllForms());
     this.forms$ = this.store.select(getAllForms);
   }
 
