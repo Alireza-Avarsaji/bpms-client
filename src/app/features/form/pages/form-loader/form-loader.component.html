@@ -3,7 +3,7 @@
         <mat-stepper *ngIf="form$ | async as form" class="h-100 col-12 position-relative"  headerPosition="bottom" #stepper>
             <mat-step *ngFor="let q of form.questions; let i = index; trackBy: trackById" [ngSwitch]="q.type">
 
-                <app-q-text [questionData]="q"></app-q-text>
+                <app-q-text *ngSwitchCase="questionTypeEnum.text" [questionData]="q"></app-q-text>
                 
             </mat-step>
         </mat-stepper>

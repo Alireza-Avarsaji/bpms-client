@@ -1,29 +1,12 @@
 <form [formGroup]="form" class="col-12 d-flex flex-wrap justify-content-between align-content-start">
-
-    
     
     <p class="mb-4">{{questionData.key!}}</p>
-    <mat-form-field class="col-12 mb-4" appearance="fill">
-        <input  matInput placeholder="پاسخ کاربر" type="text">
+    <mat-form-field class="col-12 mb-4" appearance="outline">
+        <input  matInput placeholder="پاسخ کاربر" type="text" formControlName="answer">
+            <mat-error *ngIf="form.controls['answer'].hasError('required')">{{formErrorMessages.isRequired}}</mat-error>
+            <mat-error *ngIf="form.controls['answer'].hasError('pattern')">{{formErrorMessages.regex}}</mat-error>
+            <mat-error *ngIf="form.controls['answer'].hasError('maxlength')">{{formErrorMessages.max}}</mat-error> 
+            <mat-error *ngIf="form.controls['answer'].hasError('minlength')">{{formErrorMessages.min}}</mat-error>
     </mat-form-field>
-    
-    <!-- <div formGroupName="validations" class="col-12 d-flex flex-wrap justify-content-between align-content-center align-items-center mb-2">
-        <mat-form-field  appearance="outline">
-            <mat-label>بیشترین مقدار</mat-label>
-            <input formControlName="max" matInput placeholder="بیشترین مقدار" type="text">
-        </mat-form-field>
-        <mat-form-field  appearance="outline">
-            <mat-label>کمترین مقدار</mat-label>
-            <input formControlName="min" matInput placeholder="کمترین مقدار" type="text">
-        </mat-form-field>
-        <mat-form-field  appearance="outline">
-            <mat-label>الگو</mat-label>
-            <input formControlName="regex" matInput placeholder="الگو" type="text">
-        </mat-form-field>
-        <div class="col-12 d-flex justify-content-end">
-            <mat-slide-toggle formControlName="isRequired">الزامی</mat-slide-toggle>
-        </div>
-    </div> -->
-
 
 </form>

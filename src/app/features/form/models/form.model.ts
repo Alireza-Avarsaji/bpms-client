@@ -1,3 +1,4 @@
+import { QuestionTypesEnum, ValidationTypeEnum } from "./form.enum";
 
 export class FormModel {
     id: string = '';
@@ -45,17 +46,6 @@ export interface INameValue {
     value: any;
 }
 
-export enum QuestionTypesEnum {
-    text,
-    single_select,
-    multi_select,
-    range,
-    date,
-    time,
-    file,
-    radio
-}
-
 export class ValidationModel {
     type!: ValidationTypeEnum;
     value!: string;
@@ -66,17 +56,18 @@ export class ValidationModel {
     }
 }
 
-export enum ValidationTypeEnum {
-    max,
-    min,
-    isRequired,
-    multi_select_length,
-    file_size,
-    regex,
-    extension,
-    maxH,
-    minH,
-    maxM,
-    minM
+export class FormErrorMessageModel {
+    max: string = '';
+    min: string = '';
+    isRequired: string = '';
+    multi_select_length: string = '';
+    file_size: string = '';
+    regex: string = '';
+    extension: string = '';
+    maxH: string = '';
+    minH: string = '';
+    maxM: string = '';
+    minM: string = '';
 }
+
 

@@ -6,7 +6,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { QTextValidationModel } from './q-text.models';
 import { Subscription } from 'rxjs';
 import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
-import { FormBasedQuestion, QuestionModel, ValidationTypeEnum } from 'src/app/features/form/models/form.model';
+import { FormBasedQuestion, FormErrorMessageModel, QuestionModel } from 'src/app/features/form/models/form.model';
+import { CommonModule } from '@angular/common';
+import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
 
 @Component({
   selector: 'app-q-text',
@@ -17,7 +19,8 @@ import { FormBasedQuestion, QuestionModel, ValidationTypeEnum } from 'src/app/fe
     MatFormFieldModule,
     MatInputModule,
     MatSlideToggleModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule
   ]
 })
 export class QTextComponent implements OnInit, OnDestroy {
@@ -27,14 +30,18 @@ export class QTextComponent implements OnInit, OnDestroy {
 
   form!: FormGroup;
   subscription!: Subscription;
+  formErrorMessages = new FormErrorMessageModel();
 
   constructor(private fb: FormBuilder, private checkTruthyPipe: CheckTruthyPipe) { }
 
   ngOnInit(): void {
     this.initForm();
     this.setValidations();
+
     // this.subscription = this.form.valueChanges.subscribe(value => {
-    //   this.onValueChanged(value as FormBasedQuestion<QTextValidationModel>);
+    //   // this.onValueChanged(value as FormBasedQuestion<QTextValidationModel>);
+    //   console.log(this.form.controls['answer'].errors);
+
     // });
   }
 
@@ -45,17 +52,25 @@ export class QTextComponent implements OnInit, OnDestroy {
   }
 
   setValidations() {
+
     const validations = [];
     for (const validation of this.questionData.validations) {
       switch (validation.type) {
+        case ValidationTypeEnum.isRequired:
+          validations.push(Validators.required);
+          this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          break;
         case ValidationTypeEnum.max:
           validations.push(Validators.maxLength(+validation.value));
+          this.formErrorMessages.max = `طول پاسخ نباید بیشتر از ${validation.value} باشد`;
           break;
         case ValidationTypeEnum.min:
           validations.push(Validators.minLength(+validation.value));
+          this.formErrorMessages.min = `طول پاسخ نباید کمتر از ${validation.value} باشد`;
           break;
         case ValidationTypeEnum.regex:
-          validations.push(Validators.pattern(validation.value))
+          validations.push(Validators.pattern(validation.value));
+          this.formErrorMessages.regex = 'فرمت پاسخ صحیح نیست'
           break;
         default: continue;
       }

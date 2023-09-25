@@ -1,4 +1,5 @@
-import { ValidationModel, ValidationTypeEnum } from "src/app/features/form/models/form.model";
+import { ValidationTypeEnum } from "src/app/features/form/models/form.enum";
+import { ValidationModel } from "src/app/features/form/models/form.model";
 
 export class QTextValidationModel {
     isRequired: string | null = null;

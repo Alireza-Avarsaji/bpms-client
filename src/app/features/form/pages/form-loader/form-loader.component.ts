@@ -6,6 +6,7 @@ import { FormModel, QuestionModel } from '../../models/form.model';
 import { Observable } from 'rxjs';
 import * as FormActions from '../../state/form.actions';
 import { ActivatedRoute } from '@angular/router';
+import { QuestionTypesEnum } from '../../models/form.enum';
 
 @Component({
   selector: 'app-form-loader',
@@ -15,6 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 export class FormLoaderComponent implements OnInit {
 
   form$!: Observable<FormModel>;
+  questionTypeEnum = QuestionTypesEnum;
 
   constructor(private store: Store<State>, private activatedRoute: ActivatedRoute) { }
 

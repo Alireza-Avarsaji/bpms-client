@@ -2,12 +2,14 @@ import { createReducer, on } from "@ngrx/store";
 import { IFormState } from "./form.state.model";
 import * as FormActions from './form.actions'
 import { FormModel } from "../models/form.model";
+import { SubmissionModel } from "../models/submission.model";
 
 
 const initialState: IFormState = {
     title: '',
     allForms: [],
-    currentForm: new FormModel()
+    currentForm: new FormModel(),
+    currentSubmission: new SubmissionModel()
 }
 
 export const formReducer = createReducer(initialState,
