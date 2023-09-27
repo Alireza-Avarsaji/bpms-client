@@ -1,4 +1,6 @@
-import { ValidationModel, ValidationTypeEnum } from "src/shared/models/question.model";
+import { AbstractControl, FormControl, ValidationErrors, ValidatorFn } from "@angular/forms";
+import { ValidationTypeEnum } from "src/app/features/form/models/form.enum";
+import { ValidationModel } from "src/app/features/form/models/form.model";
 
 export class QMultiSelectValidationModel {
     isRequired: string | null = null;
@@ -16,3 +18,13 @@ export const getMultiSelectValidationDto = (validations: QMultiSelectValidationM
         new ValidationModel(ValidationTypeEnum.max, validations.max?.toString()!)
     ].filter(v => v.value);
 }
+
+export function validateSelectionLimitFactory(limit: number): ValidatorFn{
+    return (control: AbstractControl): ValidationErrors | null => {
+        const selectedItems = control?.value!;
+        if (selectedItems && selectedItems.length > limit) {
+          return { maxSelectionExceeded: true } as ValidationErrors;
+        }
+        return null;
+      }
+} 

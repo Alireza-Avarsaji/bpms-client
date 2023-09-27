@@ -8,6 +8,12 @@ import { FormLoaderComponent } from './form-loader.component';
 import {MatStepperModule} from '@angular/material/stepper';
 import { QTextComponent } from 'src/shared/components/Question-templates/q-text/q-text.component';
 import { QSingleSelectComponent } from 'src/shared/components/Question-templates/q-single-select/q-single-select.component';
+import { QMultiSelectComponent } from 'src/shared/components/Question-templates/q-multi-select/q-multi-select.component';
+// import { QDateComponent } from 'src/shared/components/Question-templates/q-date/q-date.component';
+// import { QFileComponent } from 'src/shared/components/Question-templates/q-file/q-file.component';
+// import { QRadioComponent } from 'src/shared/components/Question-templates/q-radio/q-radio.component';
+// import { QRangeComponent } from 'src/shared/components/Question-templates/q-range/q-range.component';
+// import { QTimeComponent } from 'src/shared/components/Question-templates/q-time/q-time.component';
 
 
 const routes: Routes = [
@@ -29,7 +35,13 @@ const routes: Routes = [
         NgxSkeletonLoaderModule,
         MatStepperModule,
         QTextComponent,
-        QSingleSelectComponent
+        QSingleSelectComponent,
+        QMultiSelectComponent,
+        // QDateComponent,
+        // QFileComponent,
+        // QRadioComponent,
+        // QRangeComponent,
+        // QTimeComponent
     ],
     providers: [],
 })

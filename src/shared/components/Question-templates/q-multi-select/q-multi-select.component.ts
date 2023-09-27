@@ -1,16 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SharedModule } from 'src/shared/shared.module';
-import { QMultiSelectValidationModel } from './q-multi-select.model';
-import { Subscription } from 'rxjs';
-import { FormBasedQuestion } from 'src/app/layout/form/create-form/state/form.state.model';
+import { Subscription, tap } from 'rxjs';
 import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
+import { FormErrorMessageModel, QuestionModel } from 'src/app/features/form/models/form.model';
+import { AnswerModel } from 'src/app/features/form/models/submission.model';
+import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
+import { validateSelectionLimitFactory } from './q-multi-select.model';
 
 @Component({
   selector: 'app-q-multi-select',
@@ -20,68 +19,72 @@ import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
   imports: [
     MatFormFieldModule,
     MatInputModule,
-    MatSlideToggleModule,
     ReactiveFormsModule,
     MatSelectModule,
-    MatChipsModule,
-    MatAutocompleteModule,
     SharedModule
   ]
 })
 export class QMultiSelectComponent {
 
-  @Input() data!: FormBasedQuestion<QMultiSelectValidationModel>;
-  @Output() valueChanged = new EventEmitter<FormBasedQuestion<QMultiSelectValidationModel>>();
-
+  @Input() questionData!: QuestionModel;
+  @Output() valueChanged = new EventEmitter<AnswerModel>();
 
   form!: FormGroup;
   subscription!: Subscription;
+  formErrorMessages = new FormErrorMessageModel();
+  selectionLimit: number = 0;
 
-
-  constructor(private fb: FormBuilder,private checkTruthyPipe: CheckTruthyPipe) {}
+  constructor(private fb: FormBuilder, private checkTruthyPipe: CheckTruthyPipe) { }
 
   ngOnInit(): void {
     this.initForm();
-    this.subscription = this.form.valueChanges.subscribe(value => {
-      this.onValueChanged(value as FormBasedQuestion<QMultiSelectValidationModel>);
-    });
+    this.setValidations();
+    this.subscription = this.onValueChanged().subscribe();
   }
 
   initForm() {
-    
+
     this.form = this.fb.group({
-      id: new FormControl(this.data.id ?? null),
-      type: new FormControl(this.data.type ?? null),
-      key: new FormControl(this.data.key ?? null, [Validators.required]),
-      values: new FormControl(this.data.values ?? []),
-      validations: this.fb.group({
-        isRequired: new FormControl(this.checkTruthyPipe.transform(this.data.validations?.isRequired)),
-        max: new FormControl(this.data.validations?.max ?? null),
-      })
+      qId: new FormControl(this.questionData.id),
+      answer: [null]
     });
 
   }
 
-  removeValue(index: number) {
-    const temp = [...this.form.get('values')!.value];
-    temp.splice(index, 1);
-    this.form.get('values')!.setValue(temp);
-  }
+  setValidations() {
+    const validations = [];
+    for (const validation of this.questionData.validations) {
+      switch (validation.type) {
+        case ValidationTypeEnum.isRequired:
+          validations.push(Validators.required);
+          this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          break;
 
-  addValue(event: MatChipInputEvent) {
-    const value = (event.value || '').trim();
-    if(value) {
-      this.form.get('values')!.setValue([...this.form.get('values')!.value, value]);
+        case ValidationTypeEnum.max:
+          this.setSelectionLimit(+validation.value);
+          validations.push(validateSelectionLimitFactory(+validation.value))
+          this.formErrorMessages.max = `میتوانید حداکثر ${this.selectionLimit} گزینه را انتخاب کنید`;
+          break;
+        default: continue;
+      }
     }
-    event.chipInput!.clear();
+    this.form.get('answer')?.addValidators(validations);
   }
 
   // ? emits new value to parent component
-  onValueChanged(value: FormBasedQuestion<QMultiSelectValidationModel>) {
-    value.isValid = this.form.valid;
-    this.valueChanged.emit(value);
+  onValueChanged() {
+    return this.form.valueChanges.pipe(
+      tap(() => {
+        if (this.form.valid) {
+          this.valueChanged.emit(this.form.value);
+        }
+      })
+    );
   }
 
+  setSelectionLimit(limit: number) {
+    this.selectionLimit = limit;
+  }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
