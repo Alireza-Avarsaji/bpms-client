@@ -3,10 +3,12 @@ import { Store } from '@ngrx/store';
 import { State } from '../../state/form.state.model';
 import { getCurrentForm } from '../../state/form.selectors';
 import { FormModel, QuestionModel } from '../../models/form.model';
-import { Observable } from 'rxjs';
+import { Observable, find, map } from 'rxjs';
 import * as FormActions from '../../state/form.actions';
 import { ActivatedRoute } from '@angular/router';
 import { QuestionTypesEnum } from '../../models/form.enum';
+import { FormControl } from '@angular/forms';
+import { AnswerModel } from '../../models/submission.model';
 
 @Component({
   selector: 'app-form-loader',
@@ -22,13 +24,17 @@ export class FormLoaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(
-      param => this.store.dispatch(FormActions.loadFormById({ id: param['id']}))
+      param => this.store.dispatch(FormActions.loadFormById({ id: param['id'] }))
     );
     this.form$ = this.store.select(getCurrentForm);
   }
 
   trackById(index: number, item: QuestionModel) {
     return item.id;
+  }
+
+  onAnswerChange(answer: AnswerModel) {
+    this.store.dispatch(FormActions.updateAnswer({ answer }));
   }
 
 

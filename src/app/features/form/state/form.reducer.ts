@@ -9,7 +9,7 @@ const initialState: IFormState = {
     title: '',
     allForms: [],
     currentForm: new FormModel(),
-    currentSubmission: new SubmissionModel()
+    currentAnswers: []
 }
 
 export const formReducer = createReducer(initialState,
@@ -57,6 +57,27 @@ export const formReducer = createReducer(initialState,
             }
         }
     ),
+
+    // ? updates an answer
+    on(
+        FormActions.updateAnswer,
+        (state, action) => {
+            const answers = [...state.currentAnswers];
+            const actionAnswer = answers.find(a => a.qId == action.answer.qId);
+            if (actionAnswer) {
+                const index = answers.indexOf(actionAnswer);
+                answers[index] = action.answer;
+            }
+            else {
+                answers.push(action.answer);
+            }
+
+            return {
+                ...state,
+                currentAnswers: answers
+            }
+        }
+    )
 
 
 

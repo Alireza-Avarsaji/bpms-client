@@ -1,5 +1,5 @@
 export class SubmissionModel {
-    formId!: string;
+    formId: string = '';
     answers!: AnswerModel[]; 
 }
 

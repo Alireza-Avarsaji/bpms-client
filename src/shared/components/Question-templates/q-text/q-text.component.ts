@@ -2,13 +2,11 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { QTextValidationModel } from './q-text.models';
-import { Subscription } from 'rxjs';
-import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
-import { FormBasedQuestion, FormErrorMessageModel, QuestionModel } from 'src/app/features/form/models/form.model';
+import { Subscription, tap } from 'rxjs';
+import { FormErrorMessageModel, QuestionModel } from 'src/app/features/form/models/form.model';
 import { CommonModule } from '@angular/common';
 import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
+import { AnswerModel } from 'src/app/features/form/models/submission.model';
 
 @Component({
   selector: 'app-q-text',
@@ -18,7 +16,6 @@ import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
   imports: [
     MatFormFieldModule,
     MatInputModule,
-    MatSlideToggleModule,
     ReactiveFormsModule,
     CommonModule
   ]
@@ -26,27 +23,24 @@ import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
 export class QTextComponent implements OnInit, OnDestroy {
 
   @Input() questionData!: QuestionModel;
-  @Output() valueChanged = new EventEmitter<FormBasedQuestion<QTextValidationModel>>();
+  @Output() valueChanged = new EventEmitter<AnswerModel>();
 
   form!: FormGroup;
   subscription!: Subscription;
   formErrorMessages = new FormErrorMessageModel();
 
-  constructor(private fb: FormBuilder, private checkTruthyPipe: CheckTruthyPipe) { }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.initForm();
     this.setValidations();
+    this.subscription = this.onValueChanged().subscribe();
 
-    // this.subscription = this.form.valueChanges.subscribe(value => {
-    //   // this.onValueChanged(value as FormBasedQuestion<QTextValidationModel>);
-    //   console.log(this.form.controls['answer'].errors);
-
-    // });
   }
 
   initForm() {
     this.form = this.fb.group({
+      qId: new FormControl(this.questionData.id),
       answer: new FormControl(null)
     });
   }
@@ -79,9 +73,14 @@ export class QTextComponent implements OnInit, OnDestroy {
   }
 
   // ? emits new value to parent component
-  onValueChanged(value: FormBasedQuestion<QTextValidationModel>) {
-    value.isValid = this.form.valid;
-    this.valueChanged.emit(value);
+  onValueChanged() {
+    return this.form.valueChanges.pipe(
+      tap(() => {
+        if(this.form.valid) {
+          this.valueChanged.emit(this.form.value);
+        }
+      })
+    );
   }
 
 

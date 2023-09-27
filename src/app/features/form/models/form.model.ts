@@ -1,3 +1,4 @@
+import { AbstractControl, FormControl } from "@angular/forms";
 import { QuestionTypesEnum, ValidationTypeEnum } from "./form.enum";
 
 export class FormModel {
@@ -32,6 +33,7 @@ export class QuestionModel {
     values?: string[];
     validations!:  ValidationModel[];
     hint: string = '';
+    formControl: AbstractControl = new FormControl();
 
     constructor(init?: FormBasedQuestion<any>) {
         this.values = [];

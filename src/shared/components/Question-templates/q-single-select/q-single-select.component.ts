@@ -3,14 +3,11 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { SharedModule } from 'src/shared/shared.module';
-import { Subscription } from 'rxjs';
-import { QSingleSelectValidationModel } from './q-single-select.models';
-import { FormBasedQuestion } from 'src/app/layout/form/create-form/state/form.state.model';
-import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
+import { Subscription, tap } from 'rxjs';
+import { FormErrorMessageModel, QuestionModel } from 'src/app/features/form/models/form.model';
+import { AnswerModel } from 'src/app/features/form/models/submission.model';
+import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
 
 
 @Component({
@@ -21,66 +18,63 @@ import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
   imports: [
     MatFormFieldModule,
     MatInputModule,
-    MatSlideToggleModule,
     ReactiveFormsModule,
     MatSelectModule,
-    MatChipsModule,
-    MatAutocompleteModule,
     SharedModule
   ]
 })
 export class QSingleSelectComponent {
 
-  @Input() data!: FormBasedQuestion<QSingleSelectValidationModel>;
-
-  @Output() valueChanged = new EventEmitter<FormBasedQuestion<QSingleSelectValidationModel>>();
+  @Input() questionData!: QuestionModel;
+  @Output() valueChanged = new EventEmitter<AnswerModel>();
 
   form!: FormGroup;
   subscription!: Subscription;
+  formErrorMessages = new FormErrorMessageModel();
 
-  constructor(private fb: FormBuilder, private checkTruthyPipe: CheckTruthyPipe) { }
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.initForm();
-    this.subscription = this.form.valueChanges.subscribe(value => {
-      this.onValueChanged(value as FormBasedQuestion<QSingleSelectValidationModel>);
-    });
+    this.setValidations();
+    this.subscription = this.onValueChanged().subscribe();
   }
 
   initForm() {
 
     this.form = this.fb.group({
-      id: new FormControl(this.data.id ?? null),
-      type: new FormControl(this.data.type ?? null),
-      key: new FormControl(this.data.key ?? null, [Validators.required]),
-      values: new FormControl(this.data.values ?? []),
-      validations: this.fb.group({
-        isRequired: new FormControl(this.checkTruthyPipe.transform(this.data.validations?.isRequired)),
-      })
+      qId: new FormControl(this.questionData.id),
+      answer: new FormControl(null)
     });
 
 
   }
 
-  removeValue(index: number) {
-    const temp = [...this.form.get('values')!.value];
-    temp.splice(index, 1);
-    this.form.get('values')!.setValue(temp);
-  }
-
-  addValue(event: MatChipInputEvent) {
-    const value = (event.value || '').trim();
-    if (value) {
-      this.form.get('values')!.setValue([...this.form.get('values')!.value, value]);
+  setValidations() {
+    const validations = [];
+    for (const validation of this.questionData.validations) {
+      switch (validation.type) {
+        case ValidationTypeEnum.isRequired:
+          validations.push(Validators.required);
+          this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          break;
+        default: continue;
+      }
     }
-    event.chipInput!.clear();
-
+    this.form.get('answer')?.addValidators(validations);
   }
+
 
   // ? emits new value to parent component
-  onValueChanged(value: FormBasedQuestion<QSingleSelectValidationModel>) {
-    value.isValid = this.form.valid;
-    this.valueChanged.emit(value);
+  onValueChanged() {
+    return this.form.valueChanges.pipe(
+      tap(() => {
+        if(this.form.valid) {
+          this.valueChanged.emit(this.form.value);
+        }
+      })
+    );
   }
 
 

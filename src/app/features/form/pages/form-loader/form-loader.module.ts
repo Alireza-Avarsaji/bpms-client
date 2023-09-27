@@ -7,6 +7,7 @@ import { SharedModule } from 'src/shared/shared.module';
 import { FormLoaderComponent } from './form-loader.component';
 import {MatStepperModule} from '@angular/material/stepper';
 import { QTextComponent } from 'src/shared/components/Question-templates/q-text/q-text.component';
+import { QSingleSelectComponent } from 'src/shared/components/Question-templates/q-single-select/q-single-select.component';
 
 
 const routes: Routes = [
@@ -27,7 +28,8 @@ const routes: Routes = [
         ReactiveFormsModule,
         NgxSkeletonLoaderModule,
         MatStepperModule,
-        QTextComponent
+        QTextComponent,
+        QSingleSelectComponent
     ],
     providers: [],
 })
