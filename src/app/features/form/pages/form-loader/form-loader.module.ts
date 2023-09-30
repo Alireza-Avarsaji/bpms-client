@@ -9,6 +9,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import { QTextComponent } from 'src/shared/components/Question-templates/q-text/q-text.component';
 import { QSingleSelectComponent } from 'src/shared/components/Question-templates/q-single-select/q-single-select.component';
 import { QMultiSelectComponent } from 'src/shared/components/Question-templates/q-multi-select/q-multi-select.component';
+import { QRangeComponent } from 'src/shared/components/Question-templates/q-range/q-range.component';
 // import { QDateComponent } from 'src/shared/components/Question-templates/q-date/q-date.component';
 // import { QFileComponent } from 'src/shared/components/Question-templates/q-file/q-file.component';
 // import { QRadioComponent } from 'src/shared/components/Question-templates/q-radio/q-radio.component';
@@ -37,6 +38,7 @@ const routes: Routes = [
         QTextComponent,
         QSingleSelectComponent,
         QMultiSelectComponent,
+        QRangeComponent
         // QDateComponent,
         // QFileComponent,
         // QRadioComponent,

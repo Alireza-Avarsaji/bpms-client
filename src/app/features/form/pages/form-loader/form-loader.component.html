@@ -6,6 +6,7 @@
                 <app-q-text *ngSwitchCase="questionTypeEnum.text" [questionData]="q" (valueChanged)="onAnswerChange($event)"></app-q-text>
                 <app-q-single-select *ngSwitchCase="questionTypeEnum.single_select" [questionData]="q" (valueChanged)="onAnswerChange($event)"></app-q-single-select>
                 <app-q-multi-select *ngSwitchCase="questionTypeEnum.multi_select" [questionData]="q" (valueChanged)="onAnswerChange($event)"></app-q-multi-select>
+                <app-q-range *ngSwitchCase="questionTypeEnum.range" [questionData]="q" (valueChanged)="onAnswerChange($event)"></app-q-range>
                 
             </mat-step>
         </mat-stepper>

@@ -2,13 +2,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SharedModule } from 'src/shared/shared.module';
 import { MatSliderModule } from '@angular/material/slider';
-import { QRangeValidationModel } from './q-range.model';
-import { Subscription } from 'rxjs';
-import { FormBasedQuestion } from 'src/app/layout/form/create-form/state/form.state.model';
-import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
+import { Subscription, tap } from 'rxjs';
+import { QuestionModel, FormErrorMessageModel } from 'src/app/features/form/models/form.model';
+import { AnswerModel } from 'src/app/features/form/models/submission.model';
+import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
 
 @Component({
   selector: 'app-q-range',
@@ -18,7 +17,6 @@ import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
   imports: [
     MatFormFieldModule,
     MatInputModule,
-    MatSlideToggleModule,
     ReactiveFormsModule,
     SharedModule,
     MatSliderModule
@@ -26,39 +24,65 @@ import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
 })
 export class QRangeComponent {
 
-  @Input() data!: FormBasedQuestion<QRangeValidationModel>;
-  @Output() valueChanged = new EventEmitter<FormBasedQuestion<QRangeValidationModel>>();
+  @Input() questionData!: QuestionModel;
+  @Output() valueChanged = new EventEmitter<AnswerModel>();
+
   form!: FormGroup;
   subscription!: Subscription;
+  formErrorMessages = new FormErrorMessageModel();
+  maxLimit: number = 0;
+  minLimit: number = 0;
 
-
-  constructor(private fb: FormBuilder, private checkTruthyPipe: CheckTruthyPipe) { }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.initForm();
-    this.subscription = this.form.valueChanges.subscribe(value => {
-      this.onValueChanged(value as FormBasedQuestion<QRangeValidationModel>);
-    });
+    this.subscription = this.onValueChanged().subscribe();
+    this.setValidations();
   }
 
   initForm() {
     this.form = this.fb.group({
-      id: new FormControl(this.data.id ?? null),
-      type: new FormControl(this.data.type ?? null),
-      key: new FormControl(this.data.key ?? null, [Validators.required]),
-      validations: this.fb.group({
-        isRequired: new FormControl(this.checkTruthyPipe.transform(this.data.validations?.isRequired)),
-        max: new FormControl(this.data.validations?.max ?? null),
-        min: new FormControl(this.data.validations?.min ?? null),
-      })
+      qId: new FormControl(this.questionData.id),
+      answer: new FormControl(null)
     });
 
   }
 
+  setValidations() {
+    const validations = [];
+    for (const validation of this.questionData.validations) {
+      switch (validation.type) {
+        case ValidationTypeEnum.isRequired:
+          validations.push(Validators.required);
+          this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          break;
+        case ValidationTypeEnum.max:
+        this.maxLimit = +validation.value;
+          break;
+        case ValidationTypeEnum.min:
+          this.minLimit = +validation.value;  
+          this.form.get('answer')?.setValue(this.minLimit);
+          break;
+        default: continue;
+      }
+    }
+    this.form.get('answer')?.addValidators(validations);
+  }
+
   // ? emits new value to parent component
-  onValueChanged(value: FormBasedQuestion<QRangeValidationModel>) {
-    value.isValid = this.form.valid;
-    this.valueChanged.emit(value);
+  onValueChanged() {
+    return this.form.valueChanges.pipe(
+      tap(() => {
+        if (this.form.valid) {
+          this.valueChanged.emit(this.form.value);
+        }
+      })
+    );
+  }
+
+  formatLabel(value: number): string {
+    return value.toString();
   }
 
 
