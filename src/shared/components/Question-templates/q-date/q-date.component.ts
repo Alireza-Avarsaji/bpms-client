@@ -6,10 +6,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SharedModule } from 'src/shared/shared.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { Subscription } from 'rxjs';
-import { QDateValidationModel } from './q-date.model';
-import { FormBasedQuestion } from 'src/app/layout/form/create-form/state/form.state.model';
-import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
+import { Subscription, tap } from 'rxjs';
+import { QuestionModel, FormErrorMessageModel } from 'src/app/features/form/models/form.model';
+import { AnswerModel } from 'src/app/features/form/models/submission.model';
+import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
 
 @Component({
   selector: 'app-q-date',
@@ -29,39 +29,71 @@ import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
 export class QDateComponent {
 
 
-  @Input() data!: FormBasedQuestion<QDateValidationModel>;
-  @Output() valueChanged = new EventEmitter<FormBasedQuestion<QDateValidationModel>>();
+  @Input() questionData!: QuestionModel;
+  @Output() valueChanged = new EventEmitter<AnswerModel>();
+
   form!: FormGroup;
   subscription!: Subscription;
+  formErrorMessages = new FormErrorMessageModel();
+  maxDate!: Date;
+  minDate!: Date;
 
-  constructor(private fb: FormBuilder, private checkTruthyPipe: CheckTruthyPipe) { }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.initForm();
-    this.subscription = this.form.valueChanges.subscribe(value => {
-      this.onValueChanged(value as FormBasedQuestion<QDateValidationModel>);
-    });
+    this.setValidations();
+    this.subscription = this.onValueChanged().subscribe();
   }
 
   initForm() {
-
     this.form = this.fb.group({
-      id: new FormControl(this.data.id ?? null),
-      type: new FormControl(this.data.type ?? null),
-      key: new FormControl(this.data.key ?? null, [Validators.required]),
-      validations: this.fb.group({
-        isRequired: new FormControl(this.checkTruthyPipe.transform(this.data.validations?.isRequired)),
-        max: new FormControl(this.data.validations?.max ?? null),
-        min: new FormControl(this.data.validations?.min ?? null),
-      })
+      qId: new FormControl(this.questionData.id),
+      answer: new FormControl(null)
     });
   }
 
-  // ? emits new value to parent component
-  onValueChanged(value: FormBasedQuestion<QDateValidationModel>) {
-    value.isValid = this.form.valid;
-    this.valueChanged.emit(value);
+  setValidations() {
+    const validations = [];
+    for (const validation of this.questionData.validations) {
+      switch (validation.type) {
+        case ValidationTypeEnum.isRequired:
+          validations.push(Validators.required);
+          this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          break;
+        case ValidationTypeEnum.max:
+          this.maxDate = new Date(validation.value);
+          // validations.push(Validators.max(new Date(validation.value)));
+          this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          break;
+        case ValidationTypeEnum.min:
+          // validations.push(Validators.required);
+          this.minDate = new Date(validation.value);
+          this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          break;
+        default: continue;
+      }
+    }
+    this.form.get('answer')?.addValidators(validations);
   }
+
+
+  // ? emits new value to parent component
+  onValueChanged() {
+    return this.form.valueChanges.pipe(
+      tap(() => {
+        if (this.form.valid) {
+          this.valueChanged.emit(this.form.value);
+        }
+      })
+    );
+  }
+
+  myFilter = (d: Date | null): boolean => {
+    const day = (d || new Date());
+    // Prevent Saturday and Sunday from being selected.
+    return day > this.minDate && day < this.maxDate;
+  };
 
 
   ngOnDestroy(): void {
