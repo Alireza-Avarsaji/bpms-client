@@ -1,15 +1,16 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { Hours, Minutes } from 'src/shared/constants/time';
 import { SharedModule } from 'src/shared/shared.module';
-import { QTimeValidationModel } from './q-time.model';
-import { Subscription } from 'rxjs';
-import { FormBasedQuestion } from 'src/app/layout/form/create-form/state/form.state.model';
-import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
+import { Subscription, tap } from 'rxjs';
+import { QuestionModel, FormErrorMessageModel } from 'src/app/features/form/models/form.model';
+import { AnswerModel } from 'src/app/features/form/models/submission.model';
+import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
+import { Hours, Minutes } from 'src/shared/constants/time';
+import { validateTimeLimitFactory } from './q-time.model';
 
 @Component({
   selector: 'app-q-time',
@@ -28,44 +29,82 @@ import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
 export class QTimeComponent {
 
 
-  @Input() data!: FormBasedQuestion<QTimeValidationModel>;
-  @Output() valueChanged = new EventEmitter<FormBasedQuestion<QTimeValidationModel>>();
+  @Input() questionData!: QuestionModel;
+  @Output() valueChanged = new EventEmitter<AnswerModel>();
+
   form!: FormGroup;
   subscription!: Subscription;
+  formErrorMessages = new FormErrorMessageModel();
   hours = Hours;
   minutes = Minutes;
+  maxH!: number;
+  minH!: number;
+  maxM!: number;
+  minM!: number;
 
-  constructor(private fb: FormBuilder, private checkTruthyPipe: CheckTruthyPipe) { }
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.initForm();
-    this.subscription = this.form.valueChanges.subscribe(value => {
-      this.onValueChanged(value as FormBasedQuestion<QTimeValidationModel>);
-    });
+    this.setValidations();
+    this.subscription = this.onValueChanged().subscribe();
   }
 
   initForm() {
     this.form = this.fb.group({
-      id: new FormControl(this.data.id ?? null),
-      type: new FormControl(this.data.type ?? null),
-      key: new FormControl(this.data.key ?? null, [Validators.required]),
-      validations: this.fb.group({
-        isRequired: new FormControl(this.checkTruthyPipe.transform(this.data.validations?.isRequired)),
-        maxH: new FormControl(this.data.validations?.maxH ?? null),
-        maxM: new FormControl(this.data.validations?.maxM ?? null),
-        minH: new FormControl(this.data.validations?.minH ?? null),
-        minM: new FormControl(this.data.validations?.minM ?? null),
-      })
+      qId: new FormControl(this.questionData.id),
+      hour: new FormControl(null),
+      minute: new FormControl(null),
+      answer: new FormControl(null)
     });
 
   }
 
-  // ? emits new value to parent component
-  onValueChanged(value: FormBasedQuestion<QTimeValidationModel>) {
-    value.isValid = this.form.valid;
-    this.valueChanged.emit(value);
+  setValidations() {
+    for (const validation of this.questionData.validations) {
+      switch (validation.type) {
+        case ValidationTypeEnum.isRequired:
+          this.form.get('hour')?.addValidators([Validators.required]);
+          this.form.get('minute')?.addValidators([Validators.required]);
+          this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          break;
+        case ValidationTypeEnum.maxH:
+          this.maxH = +validation.value;
+          break;
+        case ValidationTypeEnum.maxM:
+          this.maxM = +validation.value;
+          break;
+        case ValidationTypeEnum.minH:
+          this.minH = +validation.value;
+          break;
+        case ValidationTypeEnum.minM:
+          this.minM = +validation.value;
+          break;
+        default: continue;
+      }
+    }
+    const timeLimitValidation = validateTimeLimitFactory(this.maxH, this.minH, this.maxM, this.minM);
+    this.form.addValidators(timeLimitValidation);
   }
 
+
+
+  // ? emits new value to parent component
+  onValueChanged() {
+
+    return this.form.valueChanges.pipe(
+      tap(() => {
+        if (this.form.valid) {
+          const formValue: AnswerModel = {
+            qId: this.form.value.qId,
+            value: this.form.value.hour + ':' + this.form.value.minute
+          }
+          this.valueChanged.emit(formValue);
+        }
+      })
+    );
+  }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

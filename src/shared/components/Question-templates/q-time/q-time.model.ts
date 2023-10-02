@@ -1,7 +1,9 @@
-import { ValidationModel, ValidationTypeEnum } from "src/shared/models/question.model";
+import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
+import { ValidationTypeEnum } from "src/app/features/form/models/form.enum";
+import { ValidationModel } from "src/app/features/form/models/form.model";
 
 export class QTimeValidationModel {
-    isRequired: string | null = null; 
+    isRequired: string | null = null;
     maxH: number | null = null;
     maxM: number | null = null;
     minH: number | null = null;
@@ -22,3 +24,22 @@ export const getTimeValidationDto = (validations: QTimeValidationModel) => {
         new ValidationModel(ValidationTypeEnum.minM, String(validations.minM)),
     ].filter(v => v.value);
 }
+
+export function validateTimeLimitFactory(maxH: number, minH: number, maxM: number, minM: number): ValidatorFn {
+
+    const error = { max: `ساعت انتخابی باید بین ${minH + ':' + minM} و ${maxH + ':' + maxM} باشد` };
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+        const hour = formGroup.get('hour')?.value;
+        const minute = formGroup.get('minute')?.value;
+        if (hour === null || minute === null)
+            return null;
+        const errCondition1 = hour > maxH || hour < minH;
+        const errCondition2 = hour == maxH && minute > maxM;
+        const errCondition3 = hour == minH && minute < minM;
+
+        if (errCondition1 || errCondition2 || errCondition3)
+            return error;
+        else
+            return null;
+    }
+} 

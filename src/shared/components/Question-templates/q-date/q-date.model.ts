@@ -1,4 +1,5 @@
-import { ValidationModel, ValidationTypeEnum } from "src/shared/models/question.model";
+import { ValidationTypeEnum } from "src/app/features/form/models/form.enum";
+import { ValidationModel } from "src/app/features/form/models/form.model";
 
 export class QDateValidationModel {
     isRequired: string | null = null;
