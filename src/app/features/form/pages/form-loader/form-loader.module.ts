@@ -12,11 +12,9 @@ import { QMultiSelectComponent } from 'src/shared/components/Question-templates/
 import { QRangeComponent } from 'src/shared/components/Question-templates/q-range/q-range.component';
 import { QDateComponent } from 'src/shared/components/Question-templates/q-date/q-date.component';
 import { QTimeComponent } from 'src/shared/components/Question-templates/q-time/q-time.component';
-// import { QDateComponent } from 'src/shared/components/Question-templates/q-date/q-date.component';
+import { QFileComponent } from 'src/shared/components/Question-templates/q-file/q-file.component';
 // import { QFileComponent } from 'src/shared/components/Question-templates/q-file/q-file.component';
 // import { QRadioComponent } from 'src/shared/components/Question-templates/q-radio/q-radio.component';
-// import { QRangeComponent } from 'src/shared/components/Question-templates/q-range/q-range.component';
-// import { QTimeComponent } from 'src/shared/components/Question-templates/q-time/q-time.component';
 
 
 const routes: Routes = [
@@ -42,9 +40,8 @@ const routes: Routes = [
         QMultiSelectComponent,
         QRangeComponent,
         QDateComponent,
-        // QFileComponent,
+        QFileComponent,
         // QRadioComponent,
-        // QRangeComponent,
         QTimeComponent
     ],
     providers: [],
