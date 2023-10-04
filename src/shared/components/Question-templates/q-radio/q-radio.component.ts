@@ -8,9 +8,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SharedModule } from 'src/shared/shared.module';
 import { QRadioValidationModel } from './q-radio.model';
-import { Subscription } from 'rxjs';
-import { FormBasedQuestion } from 'src/app/layout/form/create-form/state/form.state.model';
+import { Subscription, tap } from 'rxjs';
 import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
+import { QuestionModel, FormErrorMessageModel } from 'src/app/features/form/models/form.model';
+import { AnswerModel } from 'src/app/features/form/models/submission.model';
+import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
 
 @Component({
   selector: 'app-q-radio',
@@ -30,35 +32,52 @@ import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
 })
 export class QRadioComponent {
 
-  @Input() data!: FormBasedQuestion<QRadioValidationModel>;
-  @Output() valueChanged = new EventEmitter<FormBasedQuestion<QRadioValidationModel>>();
+  @Input() questionData!: QuestionModel;
+  @Output() valueChanged = new EventEmitter<AnswerModel>();
+
   form!: FormGroup;
   subscription!: Subscription;
+  formErrorMessages = new FormErrorMessageModel();
 
   constructor(private fb: FormBuilder,private checkTruthyPipe: CheckTruthyPipe) {}
 
   ngOnInit(): void {
     this.initForm();
-    this.subscription = this.form.valueChanges.subscribe(value => {
-      this.onValueChanged(value as FormBasedQuestion<QRadioValidationModel>);
-    });
+    this.subscription = this.onValueChanged().subscribe();
+    this.setValidations();
   }
 
   initForm() {
     this.form = this.fb.group({
-      id: new FormControl(this.data.id ?? null),
-      type: new FormControl(this.data.type ?? null),
-      key: new FormControl(this.data.key ?? null, [Validators.required]),
-      validations: this.fb.group({
-        isRequired: new FormControl(this.checkTruthyPipe.transform(this.data.validations?.isRequired)),
-      })
+      qId: new FormControl(this.questionData.id),
+      answer: new FormControl()
     });
   }
 
+  setValidations() {
+    const validations = [];
+    for (const validation of this.questionData.validations) {
+      switch (validation.type) {
+        case ValidationTypeEnum.isRequired:
+          validations.push(Validators.required);
+          this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          break;
+        default: continue;
+      }
+    }
+    this.form.get('answer')?.addValidators(validations);
+    this.form.get('answer')?.setValue(false);
+  }
+
   // ? emits new value to parent component
-  onValueChanged(value: FormBasedQuestion<QRadioValidationModel>) {
-    value.isValid = this.form.valid;
-    this.valueChanged.emit(value);
+  onValueChanged() {
+    return this.form.valueChanges.pipe(
+      tap(() => {
+        if(this.form.valid) {
+          this.valueChanged.emit(this.form.value);
+        }
+      })
+    );
   }
 
 

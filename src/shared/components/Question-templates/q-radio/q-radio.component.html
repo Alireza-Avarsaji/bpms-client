@@ -1,19 +1,8 @@
-<form [formGroup]="form" class="col-12 d-flex flex-wrap justify-content-between align-content-start">
-
-    <mat-form-field class="col-12" appearance="outline">
-        <mat-label>عنوان</mat-label>
-        <input formControlName="key" matInput placeholder="عنوان" autofocus type="text">
-        <mat-error>وارد کردن عنوان الزامی است</mat-error>
-    </mat-form-field>
-
-        <mat-slide-toggle class="mb-4" [disabled]="true">
-            پاسخ کاربر
-        </mat-slide-toggle>
+<form [formGroup]="form" class="col-12 d-flex flex-wrap justify-content-between align-content-center h-100">
 
 
-    <label class="col-12 neutral_variant__shade-10 mb-3">تنظیمات</label>
-    <div formGroupName="validations" class="col-12 d-flex flex-wrap justify-content-end">
-        <mat-slide-toggle formControlName="isRequired">الزامی</mat-slide-toggle>
-    </div>
+    <p class="mb-4">{{questionData.key!}}</p>
+    <mat-slide-toggle class="col-12 mb-4" formControlName="answer">
+    </mat-slide-toggle>
 
 </form>

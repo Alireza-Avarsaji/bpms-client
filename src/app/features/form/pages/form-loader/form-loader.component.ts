@@ -3,11 +3,10 @@ import { Store } from '@ngrx/store';
 import { State } from '../../state/form.state.model';
 import { getCurrentForm } from '../../state/form.selectors';
 import { FormModel, QuestionModel } from '../../models/form.model';
-import { Observable, find, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import * as FormActions from '../../state/form.actions';
 import { ActivatedRoute } from '@angular/router';
 import { QuestionTypesEnum } from '../../models/form.enum';
-import { FormControl } from '@angular/forms';
 import { AnswerModel } from '../../models/submission.model';
 
 @Component({

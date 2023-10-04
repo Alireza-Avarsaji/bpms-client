@@ -10,6 +10,7 @@
                 <app-q-date *ngSwitchCase="questionTypeEnum.date" [questionData]="q" (valueChanged)="onAnswerChange($event)"></app-q-date>
                 <app-q-time *ngSwitchCase="questionTypeEnum.time" [questionData]="q" (valueChanged)="onAnswerChange($event)"></app-q-time>
                 <app-q-file *ngSwitchCase="questionTypeEnum.file" [questionData]="q" (valueChanged)="onAnswerChange($event)"></app-q-file>
+                <app-q-radio *ngSwitchCase="questionTypeEnum.radio" [questionData]="q" (valueChanged)="onAnswerChange($event)"></app-q-radio>
                 
             </mat-step>
         </mat-stepper>

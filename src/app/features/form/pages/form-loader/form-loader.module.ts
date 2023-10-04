@@ -13,8 +13,7 @@ import { QRangeComponent } from 'src/shared/components/Question-templates/q-rang
 import { QDateComponent } from 'src/shared/components/Question-templates/q-date/q-date.component';
 import { QTimeComponent } from 'src/shared/components/Question-templates/q-time/q-time.component';
 import { QFileComponent } from 'src/shared/components/Question-templates/q-file/q-file.component';
-// import { QFileComponent } from 'src/shared/components/Question-templates/q-file/q-file.component';
-// import { QRadioComponent } from 'src/shared/components/Question-templates/q-radio/q-radio.component';
+import { QRadioComponent } from 'src/shared/components/Question-templates/q-radio/q-radio.component';
 
 
 const routes: Routes = [
@@ -41,7 +40,7 @@ const routes: Routes = [
         QRangeComponent,
         QDateComponent,
         QFileComponent,
-        // QRadioComponent,
+        QRadioComponent,
         QTimeComponent
     ],
     providers: [],
