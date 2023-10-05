@@ -1,18 +1,21 @@
 <section class="h-100 w-100 d-flex flex-wrap justify-content-center align-content-center bg-system_color__gray-6 p-3">
     <article class="col-12 d-flex flex-wrap justify-content-center align-content-center bg-system_color__white stepper-container">
-        <mat-stepper *ngIf="form$ | async as form" class="h-100 col-12 position-relative"  headerPosition="bottom" #stepper>
+        <mat-stepper *ngIf="form$ | async as form" class="h-100 col-12 position-relative"  headerPosition="bottom" [selectedIndex]="currentStep$ | async" #stepper>
+
             <mat-step *ngFor="let q of form.questions; let i = index; trackBy: trackById" [ngSwitch]="q.type">
 
-                <app-q-text *ngSwitchCase="questionTypeEnum.text" [questionData]="q" (valueChanged)="onAnswerChange($event)"></app-q-text>
-                <app-q-single-select *ngSwitchCase="questionTypeEnum.single_select" [questionData]="q" (valueChanged)="onAnswerChange($event)"></app-q-single-select>
-                <app-q-multi-select *ngSwitchCase="questionTypeEnum.multi_select" [questionData]="q" (valueChanged)="onAnswerChange($event)"></app-q-multi-select>
-                <app-q-range *ngSwitchCase="questionTypeEnum.range" [questionData]="q" (valueChanged)="onAnswerChange($event)"></app-q-range>
-                <app-q-date *ngSwitchCase="questionTypeEnum.date" [questionData]="q" (valueChanged)="onAnswerChange($event)"></app-q-date>
-                <app-q-time *ngSwitchCase="questionTypeEnum.time" [questionData]="q" (valueChanged)="onAnswerChange($event)"></app-q-time>
-                <app-q-file *ngSwitchCase="questionTypeEnum.file" [questionData]="q" (valueChanged)="onAnswerChange($event)"></app-q-file>
-                <app-q-radio *ngSwitchCase="questionTypeEnum.radio" [questionData]="q" (valueChanged)="onAnswerChange($event)"></app-q-radio>
+                <app-q-text *ngSwitchCase="questionTypeEnum.text" [questionData]="q" (stepChanged)="onStepChanged($event)"></app-q-text>
+                <app-q-single-select *ngSwitchCase="questionTypeEnum.single_select" [questionData]="q" (stepChanged)="onStepChanged($event)"></app-q-single-select>
+                <app-q-multi-select *ngSwitchCase="questionTypeEnum.multi_select" [questionData]="q" (stepChanged)="onStepChanged($event)"></app-q-multi-select>
+                <app-q-range *ngSwitchCase="questionTypeEnum.range" [questionData]="q" (stepChanged)="onStepChanged($event)"></app-q-range>
+                <app-q-date *ngSwitchCase="questionTypeEnum.date" [questionData]="q" (stepChanged)="onStepChanged($event)"></app-q-date>
+                <app-q-time *ngSwitchCase="questionTypeEnum.time" [questionData]="q" (stepChanged)="onStepChanged($event)"></app-q-time>
+                <app-q-file *ngSwitchCase="questionTypeEnum.file" [questionData]="q" (stepChanged)="onStepChanged($event)"></app-q-file>
+                <app-q-radio *ngSwitchCase="questionTypeEnum.radio" [questionData]="q" (stepChanged)="onStepChanged($event)"></app-q-radio>
                 
+
             </mat-step>
+
         </mat-stepper>
     </article>
 </section>

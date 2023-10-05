@@ -7,7 +7,8 @@ export interface IFormState {
     title: string;
     allForms: FormModel[];
     currentForm: FormModel;
-    currentAnswers: AnswerModel[]
+    currentAnswers: AnswerModel[];
+    currentQuestionIndex: number;
 }
 
 // ? redefine the main state interface for handling lazy loading

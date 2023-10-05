@@ -4,10 +4,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SharedModule } from 'src/shared/shared.module';
 import { MatSliderModule } from '@angular/material/slider';
-import { Subscription, tap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { QuestionModel, FormErrorMessageModel } from 'src/app/features/form/models/form.model';
-import { AnswerModel } from 'src/app/features/form/models/submission.model';
+import { UpdateStepperActionModel } from 'src/app/features/form/models/submission.model';
 import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-q-range',
@@ -19,13 +20,15 @@ import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
     MatInputModule,
     ReactiveFormsModule,
     SharedModule,
-    MatSliderModule
+    MatSliderModule,
+    MatButtonModule
   ]
 })
 export class QRangeComponent {
 
   @Input() questionData!: QuestionModel;
-  @Output() valueChanged = new EventEmitter<AnswerModel>();
+  @Output() stepChanged = new EventEmitter<UpdateStepperActionModel>();
+
 
   form!: FormGroup;
   subscription!: Subscription;
@@ -37,7 +40,6 @@ export class QRangeComponent {
 
   ngOnInit(): void {
     this.initForm();
-    this.subscription = this.onValueChanged().subscribe();
     this.setValidations();
   }
 
@@ -54,8 +56,10 @@ export class QRangeComponent {
     for (const validation of this.questionData.validations) {
       switch (validation.type) {
         case ValidationTypeEnum.isRequired:
-          validations.push(Validators.required);
-          this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          if(validation.value != 'false'){
+            validations.push(Validators.required);
+            this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          }
           break;
         case ValidationTypeEnum.max:
         this.maxLimit = +validation.value;
@@ -70,25 +74,23 @@ export class QRangeComponent {
     this.form.get('answer')?.addValidators(validations);
   }
 
-  // ? emits new value to parent component
-  onValueChanged() {
-    return this.form.valueChanges.pipe(
-      tap(() => {
-        if (this.form.valid) {
-          this.valueChanged.emit(this.form.value);
-        }
-      })
-    );
-  }
 
   formatLabel(value: number): string {
     return value.toString();
   }
 
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  nextStep() {
+    this.stepChanged.emit({
+      movement: 'next',
+      answer: this.form.value
+    });
   }
 
+  priviousStep() {
+    this.stepChanged.emit({
+      movement: 'previous'
+    });
+  }
 
 }

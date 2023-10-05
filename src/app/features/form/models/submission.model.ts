@@ -7,3 +7,8 @@ export class AnswerModel {
     qId!: string;
     value!: string;
 }
+
+export interface UpdateStepperActionModel {
+    movement: 'next' | 'previous';
+    answer?: AnswerModel;
+}

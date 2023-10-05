@@ -8,8 +8,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { Subscription, tap } from 'rxjs';
 import { QuestionModel, FormErrorMessageModel } from 'src/app/features/form/models/form.model';
-import { AnswerModel } from 'src/app/features/form/models/submission.model';
+import { AnswerModel, UpdateStepperActionModel } from 'src/app/features/form/models/submission.model';
 import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-q-date',
@@ -23,17 +24,18 @@ import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
     ReactiveFormsModule,
     SharedModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatButtonModule
   ]
 })
 export class QDateComponent {
 
 
   @Input() questionData!: QuestionModel;
-  @Output() valueChanged = new EventEmitter<AnswerModel>();
+  @Output() stepChanged = new EventEmitter<UpdateStepperActionModel>();
+
 
   form!: FormGroup;
-  subscription!: Subscription;
   formErrorMessages = new FormErrorMessageModel();
   maxDate!: Date;
   minDate!: Date;
@@ -43,7 +45,6 @@ export class QDateComponent {
   ngOnInit(): void {
     this.initForm();
     this.setValidations();
-    this.subscription = this.onValueChanged().subscribe();
   }
 
   initForm() {
@@ -58,8 +59,10 @@ export class QDateComponent {
     for (const validation of this.questionData.validations) {
       switch (validation.type) {
         case ValidationTypeEnum.isRequired:
-          validations.push(Validators.required);
-          this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          if(validation.value != 'false') {
+            validations.push(Validators.required);
+            this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          }
           break;
         case ValidationTypeEnum.max:
           this.maxDate = new Date(validation.value);
@@ -78,26 +81,23 @@ export class QDateComponent {
   }
 
 
-  // ? emits new value to parent component
-  onValueChanged() {
-    return this.form.valueChanges.pipe(
-      tap(() => {
-        if (this.form.valid) {
-          this.valueChanged.emit(this.form.value);
-        }
-      })
-    );
-  }
-
   myFilter = (d: Date | null): boolean => {
     const day = (d || new Date());
     // Prevent Saturday and Sunday from being selected.
     return day > this.minDate && day < this.maxDate;
   };
 
+  nextStep() {
+    this.stepChanged.emit({
+      movement: 'next',
+      answer: this.form.value
+    });
+  }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  priviousStep() {
+    this.stepChanged.emit({
+      movement: 'previous'
+    });
   }
 
 }

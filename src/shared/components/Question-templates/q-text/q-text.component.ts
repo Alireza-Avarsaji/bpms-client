@@ -1,12 +1,12 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Subscription, tap } from 'rxjs';
 import { FormErrorMessageModel, QuestionModel } from 'src/app/features/form/models/form.model';
 import { CommonModule } from '@angular/common';
 import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
-import { AnswerModel } from 'src/app/features/form/models/submission.model';
+import { UpdateStepperActionModel } from 'src/app/features/form/models/submission.model';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-q-text',
@@ -17,16 +17,16 @@ import { AnswerModel } from 'src/app/features/form/models/submission.model';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    MatButtonModule
   ]
 })
-export class QTextComponent implements OnInit, OnDestroy {
+export class QTextComponent implements OnInit {
 
   @Input() questionData!: QuestionModel;
-  @Output() valueChanged = new EventEmitter<AnswerModel>();
+  @Output() stepChanged = new EventEmitter<UpdateStepperActionModel>();
 
   form!: FormGroup;
-  subscription!: Subscription;
   formErrorMessages = new FormErrorMessageModel();
 
   constructor(private fb: FormBuilder) { }
@@ -34,8 +34,6 @@ export class QTextComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initForm();
     this.setValidations();
-    this.subscription = this.onValueChanged().subscribe();
-
   }
 
   initForm() {
@@ -51,8 +49,10 @@ export class QTextComponent implements OnInit, OnDestroy {
     for (const validation of this.questionData.validations) {
       switch (validation.type) {
         case ValidationTypeEnum.isRequired:
-          validations.push(Validators.required);
-          this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          if(validation.value != 'false'){
+            validations.push(Validators.required);
+            this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است'; 
+          }
           break;
         case ValidationTypeEnum.max:
           validations.push(Validators.maxLength(+validation.value));
@@ -72,20 +72,18 @@ export class QTextComponent implements OnInit, OnDestroy {
     this.form.get('answer')?.addValidators(validations);
   }
 
-  // ? emits new value to parent component
-  onValueChanged() {
-    return this.form.valueChanges.pipe(
-      tap(() => {
-        if(this.form.valid) {
-          this.valueChanged.emit(this.form.value);
-        }
-      })
-    );
+  nextStep() {
+    this.stepChanged.emit({
+      movement: 'next',
+      answer: this.form.value
+    });
   }
 
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  priviousStep() {
+    this.stepChanged.emit({
+      movement: 'previous'
+    });
   }
+
 
 }

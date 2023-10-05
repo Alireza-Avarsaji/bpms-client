@@ -9,7 +9,8 @@ const initialState: IFormState = {
     title: '',
     allForms: [],
     currentForm: new FormModel(),
-    currentAnswers: []
+    currentAnswers: [],
+    currentQuestionIndex: 0
 }
 
 export const formReducer = createReducer(initialState,
@@ -58,9 +59,31 @@ export const formReducer = createReducer(initialState,
         }
     ),
 
+    // // ? updates an answer
+    // on(
+    //     FormActions.updateAnswer,
+    //     (state, action) => {
+    //         const answers = [...state.currentAnswers];
+    //         const actionAnswer = answers.find(a => a.qId == action.answer.qId);
+    //         if (actionAnswer) {
+    //             const index = answers.indexOf(actionAnswer);
+    //             answers[index] = action.answer;
+    //         }
+    //         else {
+    //             answers.push(action.answer);
+    //         }
+
+    //         return {
+    //             ...state,
+    //             currentAnswers: answers
+    //         }
+    //     }
+    // ),
+
+
     // ? updates an answer
     on(
-        FormActions.updateAnswer,
+        FormActions.nextStep,
         (state, action) => {
             const answers = [...state.currentAnswers];
             const actionAnswer = answers.find(a => a.qId == action.answer.qId);
@@ -74,10 +97,22 @@ export const formReducer = createReducer(initialState,
 
             return {
                 ...state,
-                currentAnswers: answers
+                currentAnswers: answers,
+                currentQuestionIndex: state.currentQuestionIndex + 1
             }
         }
-    )
+    ),
+
+    // ? updates an answer
+    on(
+        FormActions.previousStep,
+        (state) => {
+            return {
+                ...state,
+                currentQuestionIndex: state.currentQuestionIndex - 1
+            }
+        }
+    ),
 
 
 

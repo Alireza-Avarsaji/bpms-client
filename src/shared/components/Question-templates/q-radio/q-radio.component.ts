@@ -7,12 +7,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SharedModule } from 'src/shared/shared.module';
-import { QRadioValidationModel } from './q-radio.model';
-import { Subscription, tap } from 'rxjs';
-import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
+import { Subscription } from 'rxjs';
 import { QuestionModel, FormErrorMessageModel } from 'src/app/features/form/models/form.model';
-import { AnswerModel } from 'src/app/features/form/models/submission.model';
+import { UpdateStepperActionModel } from 'src/app/features/form/models/submission.model';
 import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-q-radio',
@@ -24,26 +23,22 @@ import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
     MatInputModule,
     MatSlideToggleModule,
     ReactiveFormsModule,
-    MatSelectModule,
-    MatChipsModule,
-    MatAutocompleteModule,
-    SharedModule
+    SharedModule,
+    MatButtonModule
   ]
 })
 export class QRadioComponent {
 
   @Input() questionData!: QuestionModel;
-  @Output() valueChanged = new EventEmitter<AnswerModel>();
-
+  @Output() stepChanged = new EventEmitter<UpdateStepperActionModel>();
   form!: FormGroup;
   subscription!: Subscription;
   formErrorMessages = new FormErrorMessageModel();
 
-  constructor(private fb: FormBuilder,private checkTruthyPipe: CheckTruthyPipe) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.initForm();
-    this.subscription = this.onValueChanged().subscribe();
     this.setValidations();
   }
 
@@ -59,8 +54,10 @@ export class QRadioComponent {
     for (const validation of this.questionData.validations) {
       switch (validation.type) {
         case ValidationTypeEnum.isRequired:
-          validations.push(Validators.required);
-          this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          if(validation.value != 'false') {
+            validations.push(Validators.required);
+            this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          }
           break;
         default: continue;
       }
@@ -69,20 +66,19 @@ export class QRadioComponent {
     this.form.get('answer')?.setValue(false);
   }
 
-  // ? emits new value to parent component
-  onValueChanged() {
-    return this.form.valueChanges.pipe(
-      tap(() => {
-        if(this.form.valid) {
-          this.valueChanged.emit(this.form.value);
-        }
-      })
-    );
+
+  nextStep() {
+    this.stepChanged.emit({
+      movement: 'next',
+      answer: this.form.value
+    });
   }
 
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  priviousStep() {
+    this.stepChanged.emit({
+      movement: 'previous'
+    });
   }
+
 
 }

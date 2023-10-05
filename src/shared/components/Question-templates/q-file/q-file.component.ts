@@ -6,7 +6,7 @@ import { SharedModule } from 'src/shared/shared.module';
 import { Subscription, tap } from 'rxjs';
 import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
 import { QuestionModel, FormErrorMessageModel } from 'src/app/features/form/models/form.model';
-import { AnswerModel } from 'src/app/features/form/models/submission.model';
+import { AnswerModel, UpdateStepperActionModel } from 'src/app/features/form/models/submission.model';
 import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -27,32 +27,28 @@ export class QFileComponent {
 
 
   @Input() questionData!: QuestionModel;
-  @Output() valueChanged = new EventEmitter<AnswerModel>();
+  @Output() stepChanged = new EventEmitter<UpdateStepperActionModel>();
+
 
   form!: FormGroup;
-  subscription!: Subscription;
   formErrorMessages = new FormErrorMessageModel();
   maxLimit: number = 0;
   extension: string = '';
   fileName: string = '';
 
 
-  constructor(private fb: FormBuilder, private checkTruthyPipe: CheckTruthyPipe) { }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.initForm();
     this.setValidations();
-    this.subscription = this.onValueChanged().subscribe();
   }
 
   initForm() {
-
-
     this.form = this.fb.group({
       qId: new FormControl(this.questionData.id),
       answer: new FormControl(null)
     });
-
   }
 
   setValidations() {
@@ -60,8 +56,10 @@ export class QFileComponent {
     for (const validation of this.questionData.validations) {
       switch (validation.type) {
         case ValidationTypeEnum.isRequired:
-          validations.push(Validators.required);
-          this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          if(validation.value != 'false'){
+            validations.push(Validators.required);
+            this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
+          }
           break;
         case ValidationTypeEnum.max:
           this.maxLimit = +validation.value;
@@ -75,17 +73,6 @@ export class QFileComponent {
     this.form.get('answer')?.addValidators(validations);
   }
 
-
-  // ? emits new value to parent component
-  onValueChanged() {
-    return this.form.valueChanges.pipe(
-      tap(() => {
-        if (this.form.valid) {
-          this.valueChanged.emit(this.form.value);
-        }
-      })
-    );
-  }
 
   readFile(event: any): void {
     const file = event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
@@ -112,10 +99,17 @@ export class QFileComponent {
   }
 
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  nextStep() {
+    this.stepChanged.emit({
+      movement: 'next',
+      answer: this.form.value
+    });
   }
 
-
+  priviousStep() {
+    this.stepChanged.emit({
+      movement: 'previous'
+    });
+  }
 
 }

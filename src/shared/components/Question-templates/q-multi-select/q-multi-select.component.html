@@ -10,5 +10,14 @@
         <mat-error *ngIf="form.controls?.['answer']?.hasError('maxSelectionExceeded')">{{formErrorMessages.max}}</mat-error>
     </mat-form-field>
 
+    <div class="col-12 d-flex justify-content-between align-items-start">
+        <button (click)="priviousStep()" [disabled]="false" mat-button class="previous-btn system_color__purple-3" >
+            گام قبلی
+        </button>
+        <button (click)="nextStep()" [disabled]="form.invalid" mat-flat-button class="next-btn system_color__white bg-system_color__purple-3" >
+            گام بعدی
+        </button>
+    </div>
+
 
 </form>

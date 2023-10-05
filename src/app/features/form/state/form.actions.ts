@@ -42,3 +42,11 @@ export const updateAnswer = createAction(
     '[form] updateAnswer',
     props<{answer: AnswerModel}>()
 );
+
+export const nextStep = createAction(
+    '[form] nextStep',
+    props<{answer: AnswerModel}>()
+);
+export const previousStep = createAction(
+    '[form] previousStep'
+);
