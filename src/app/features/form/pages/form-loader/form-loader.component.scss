@@ -44,3 +44,15 @@
     height: calc(100% - 72px);
     overflow: auto;
 }
+
+:host ::ng-deep .mat-step-header {
+    background: transparent !important;
+}
+
+:host ::ng-deep .mat-ripple {
+    display: none !important;
+}
+
+:host ::ng-deep .mat-horizontal-stepper-header{
+    pointer-events: none !important;
+}
