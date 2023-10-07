@@ -3,10 +3,8 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SharedModule } from 'src/shared/shared.module';
-import { Subscription, tap } from 'rxjs';
-import { CheckTruthyPipe } from 'src/shared/pipes/check-truthy.pipe';
 import { QuestionModel, FormErrorMessageModel } from 'src/app/features/form/models/form.model';
-import { AnswerModel, UpdateStepperActionModel } from 'src/app/features/form/models/submission.model';
+import { UpdateStepperActionModel } from 'src/app/features/form/models/submission.model';
 import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -27,6 +25,8 @@ export class QFileComponent {
 
 
   @Input() questionData!: QuestionModel;
+  @Input() currentStep!: number;
+  @Input() totalSteps!: number;
   @Output() stepChanged = new EventEmitter<UpdateStepperActionModel>();
 
 

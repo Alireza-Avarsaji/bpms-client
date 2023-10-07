@@ -1,4 +1,4 @@
-<form [formGroup]="form" class="col-12 d-flex flex-wrap justify-content-between align-content-center h-100">
+<form [formGroup]="form" class="col-12 d-flex flex-wrap justify-content-between align-content-between">
 
 
     <p class="mb-4">{{questionData.key!}}</p>
@@ -6,12 +6,20 @@
     </mat-slide-toggle>
 
     <div class="col-12 d-flex justify-content-between align-items-start">
-        <button (click)="priviousStep()" [disabled]="false" mat-button class="previous-btn system_color__purple-3" >
+        <button (click)="priviousStep()" [ngClass]="{'invisible': currentStep === 0}" mat-button
+            class="previous-btn system_color__purple-3">
             گام قبلی
         </button>
-        <button (click)="nextStep()" [disabled]="form.invalid" mat-flat-button class="next-btn system_color__white bg-system_color__purple-3" >
+        <button *ngIf="currentStep + 1 != totalSteps else submit" (click)="nextStep()" [disabled]="form.invalid"
+            mat-flat-button class="next-btn system_color__white bg-system_color__purple-3">
             گام بعدی
         </button>
+        <ng-template #submit>
+            <button [disabled]="form.invalid" (click)="nextStep()" mat-flat-button
+                class="next-btn system_color__white bg-system_color__purple-3">
+                ثبت
+            </button>
+        </ng-template>
     </div>
 
 </form>

@@ -27,6 +27,8 @@ import { MatButtonModule } from '@angular/material/button';
 export class QMultiSelectComponent {
 
   @Input() questionData!: QuestionModel;
+  @Input() currentStep!: number;
+  @Input() totalSteps!: number;
   @Output() stepChanged = new EventEmitter<UpdateStepperActionModel>();
 
 

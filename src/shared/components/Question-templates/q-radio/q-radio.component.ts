@@ -1,10 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SharedModule } from 'src/shared/shared.module';
 import { Subscription } from 'rxjs';
@@ -30,6 +27,8 @@ import { MatButtonModule } from '@angular/material/button';
 export class QRadioComponent {
 
   @Input() questionData!: QuestionModel;
+  @Input() currentStep!: number;
+  @Input() totalSteps!: number;
   @Output() stepChanged = new EventEmitter<UpdateStepperActionModel>();
   form!: FormGroup;
   subscription!: Subscription;

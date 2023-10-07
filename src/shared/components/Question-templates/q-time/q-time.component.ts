@@ -29,6 +29,8 @@ export class QTimeComponent {
 
 
   @Input() questionData!: QuestionModel;
+  @Input() currentStep!: number;
+  @Input() totalSteps!: number;
   @Output() stepChanged = new EventEmitter<UpdateStepperActionModel>();
 
 

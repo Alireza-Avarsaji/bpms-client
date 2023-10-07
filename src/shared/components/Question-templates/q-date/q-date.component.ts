@@ -6,9 +6,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SharedModule } from 'src/shared/shared.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { Subscription, tap } from 'rxjs';
 import { QuestionModel, FormErrorMessageModel } from 'src/app/features/form/models/form.model';
-import { AnswerModel, UpdateStepperActionModel } from 'src/app/features/form/models/submission.model';
+import { UpdateStepperActionModel } from 'src/app/features/form/models/submission.model';
 import { ValidationTypeEnum } from 'src/app/features/form/models/form.enum';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -32,6 +31,8 @@ export class QDateComponent {
 
 
   @Input() questionData!: QuestionModel;
+  @Input() currentStep!: number;
+  @Input() totalSteps!: number;
   @Output() stepChanged = new EventEmitter<UpdateStepperActionModel>();
 
 
