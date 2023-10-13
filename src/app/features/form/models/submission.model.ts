@@ -4,11 +4,11 @@ export class SubmissionModel {
 }
 
 export class AnswerModel {
-    qId!: string;
-    value!: string;
+    questionId!: string;
+    answerValue!: string;
 }
 
 export interface UpdateStepperActionModel {
-    movement: 'next' | 'previous';
+    movement: 'next' | 'previous' | 'submit';
     answer?: AnswerModel;
 }

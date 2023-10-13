@@ -9,6 +9,8 @@ export interface IFormState {
     currentForm: FormModel;
     currentAnswers: AnswerModel[];
     currentQuestionIndex: number;
+    postSubmissionSuccess: boolean;
+    postSubmissionError: boolean;
 }
 
 // ? redefine the main state interface for handling lazy loading

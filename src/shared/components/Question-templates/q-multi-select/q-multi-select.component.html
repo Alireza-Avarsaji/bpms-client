@@ -2,13 +2,13 @@
 
     <p class="mb-4">{{questionData.key!}}</p>
     <mat-form-field class="col-12 mb-3" appearance="outline">
-        <mat-select formControlName="answer" multiple placeholder="پاسخ کاربر">
+        <mat-select formControlName="answerValue" multiple placeholder="پاسخ کاربر">
             <mat-option *ngFor="let value of questionData.values" [value]="value">
                 {{value}}
             </mat-option>
         </mat-select>
-        <mat-error *ngIf="form.controls?.['answer']?.hasError('maxSelectionExceeded')">{{formErrorMessages.max}}</mat-error>
-        <mat-error *ngIf="form.controls?.['answer']?.hasError('required')">{{formErrorMessages.isRequired}}</mat-error>
+        <mat-error *ngIf="form.controls?.['answerValue']?.hasError('maxSelectionExceeded')">{{formErrorMessages.max}}</mat-error>
+        <mat-error *ngIf="form.controls?.['answerValue']?.hasError('required')">{{formErrorMessages.isRequired}}</mat-error>
     </mat-form-field>
 
     <div class="col-12 d-flex justify-content-between align-items-start">
@@ -21,7 +21,7 @@
             گام بعدی
         </button>
         <ng-template #submit>
-            <button [disabled]="form.invalid" (click)="nextStep()" mat-flat-button
+            <button [disabled]="form.invalid" (click)="submitSubmission()" mat-flat-button
                 class="next-btn system_color__white bg-system_color__purple-3">
                 ثبت
             </button>

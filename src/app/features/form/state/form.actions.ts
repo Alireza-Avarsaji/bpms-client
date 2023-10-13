@@ -2,7 +2,7 @@ import { createAction, props } from "@ngrx/store";
 import { TSResult } from "src/shared/models/result-model/TServiceResult";
 import { PageList } from "src/shared/models/result-model/pageList.model";
 import { FormModel } from "../models/form.model";
-import { AnswerModel, SubmissionModel } from "../models/submission.model";
+import { AnswerModel } from "../models/submission.model";
 
 export const loadAllForms = createAction(
     '[Form] loadAllForms'
@@ -38,15 +38,30 @@ export const loadFormByIdError = createAction(
     props<{ errorMessage: string }>()
 );
 
-export const updateAnswer = createAction(
-    '[form] updateAnswer',
-    props<{answer: AnswerModel}>()
-);
-
 export const nextStep = createAction(
     '[form] nextStep',
     props<{answer: AnswerModel}>()
 );
+
 export const previousStep = createAction(
-    '[form] previousStep'
+    '[form] submitForm'
+);
+
+export const postSubmission = createAction(
+    '[form] postSubmission',
+    props<{answer: AnswerModel}>()
+);
+
+export const postSubmissionSuccess = createAction(
+    '[form] postSubmissionSuccess'
+);
+
+
+export const postSubmissionError = createAction(
+    '[form] postSubmissionError'
+);
+
+
+export const clearCurrentForm = createAction(
+    '[form] clearCurrentForm'
 );

@@ -46,8 +46,8 @@ export class QFileComponent {
 
   initForm() {
     this.form = this.fb.group({
-      qId: new FormControl(this.questionData.id),
-      answer: new FormControl(null)
+      questionId: new FormControl(this.questionData.id),
+      answerValue: new FormControl(null)
     });
   }
 
@@ -70,7 +70,7 @@ export class QFileComponent {
         default: continue;
       }
     }
-    this.form.get('answer')?.addValidators(validations);
+    this.form.get('answerValue')?.addValidators(validations);
   }
 
 
@@ -95,7 +95,7 @@ export class QFileComponent {
 
   _handleReaderLoaded(e: any) {
     const reader = e.target;
-    this.form.get('answer')?.setValue(reader.result as string);
+    this.form.get('answerValue')?.setValue(reader.result as string);
   }
 
 
@@ -109,6 +109,13 @@ export class QFileComponent {
   priviousStep() {
     this.stepChanged.emit({
       movement: 'previous'
+    });
+  }
+
+  submitSubmission() {
+    this.stepChanged.emit({
+      movement: 'submit',
+      answer: this.form.value
     });
   }
 

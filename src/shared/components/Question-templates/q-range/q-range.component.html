@@ -6,7 +6,7 @@
 
         <span class="px-2 text-center">{{minLimit}}</span>
         <mat-slider class="mb-0" [step]="1" [displayWith]="formatLabel" discrete [min]="minLimit" [max]="maxLimit">
-            <input formControlName="answer" matSliderThumb>
+            <input formControlName="answerValue" matSliderThumb>
         </mat-slider>
         <span class="px-2 text-center">{{maxLimit}}</span>
 
@@ -22,7 +22,7 @@
             گام بعدی
         </button>
         <ng-template #submit>
-            <button [disabled]="form.invalid" (click)="nextStep()" mat-flat-button
+            <button [disabled]="form.invalid" (click)="submitSubmission()" mat-flat-button
                 class="next-btn system_color__white bg-system_color__purple-3">
                 ثبت
             </button>

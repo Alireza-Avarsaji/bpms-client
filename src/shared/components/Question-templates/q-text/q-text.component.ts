@@ -40,8 +40,8 @@ export class QTextComponent implements OnInit {
 
   initForm() {
     this.form = this.fb.group({
-      qId: new FormControl(this.questionData.id),
-      answer: new FormControl(null)
+      questionId: new FormControl(this.questionData.id),
+      answerValue: new FormControl(null)
     });
   }
 
@@ -51,9 +51,9 @@ export class QTextComponent implements OnInit {
     for (const validation of this.questionData.validations) {
       switch (validation.type) {
         case ValidationTypeEnum.isRequired:
-          if(validation.value != 'false'){
+          if (validation.value != 'false') {
             validations.push(Validators.required);
-            this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است'; 
+            this.formErrorMessages.isRequired = 'وارد کردن پاسخ الزامی است';
           }
           break;
         case ValidationTypeEnum.max:
@@ -71,7 +71,7 @@ export class QTextComponent implements OnInit {
         default: continue;
       }
     }
-    this.form.get('answer')?.addValidators(validations);
+    this.form.get('answerValue')?.addValidators(validations);
   }
 
   nextStep() {
@@ -84,6 +84,13 @@ export class QTextComponent implements OnInit {
   priviousStep() {
     this.stepChanged.emit({
       movement: 'previous'
+    });
+  }
+
+  submitSubmission() {
+    this.stepChanged.emit({
+      movement: 'submit',
+      answer: this.form.value
     });
   }
 

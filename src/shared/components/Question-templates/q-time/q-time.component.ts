@@ -53,10 +53,10 @@ export class QTimeComponent {
 
   initForm() {
     this.form = this.fb.group({
-      qId: new FormControl(this.questionData.id),
+      questionId: new FormControl(this.questionData.id),
       hour: new FormControl(null),
       minute: new FormControl(null),
-      answer: new FormControl(null)
+      answerValue: new FormControl(null)
     });
 
   }
@@ -93,8 +93,8 @@ export class QTimeComponent {
 
   nextStep() {
     const formValue: AnswerModel = {
-      qId: this.form.value.qId,
-      value: this.form.value.hour + ':' + this.form.value.minute
+      questionId: this.form.value.questionId,
+      answerValue: this.form.value.hour + ':' + this.form.value.minute
     }
     this.stepChanged.emit({
       movement: 'next',
@@ -105,6 +105,13 @@ export class QTimeComponent {
   priviousStep() {
     this.stepChanged.emit({
       movement: 'previous'
+    });
+  }
+
+  submitSubmission() {
+    this.stepChanged.emit({
+      movement: 'submit',
+      answer: this.form.value
     });
   }
 

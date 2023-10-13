@@ -46,8 +46,8 @@ export class QMultiSelectComponent {
   initForm() {
 
     this.form = this.fb.group({
-      qId: new FormControl(this.questionData.id),
-      answer: [null]
+      questionId: new FormControl(this.questionData.id),
+      answerValue: [null]
     });
 
   }
@@ -71,7 +71,7 @@ export class QMultiSelectComponent {
         default: continue;
       }
     }
-    this.form.get('answer')?.addValidators(validations);
+    this.form.get('answerValue')?.addValidators(validations);
   }
 
 
@@ -80,9 +80,14 @@ export class QMultiSelectComponent {
   }
 
   nextStep() {
+    const value = String(this.form.controls['answerValue'].value);
+    const formValue = {
+      questionId: this.form.value.questionId,
+      answerValue: value
+    }
     this.stepChanged.emit({
       movement: 'next',
-      answer: this.form.value
+      answer: formValue
     });
   }
 
@@ -92,5 +97,16 @@ export class QMultiSelectComponent {
     });
   }
 
+  submitSubmission() {
+    const value = String(this.form.controls['answerValue'].value);
+    const formValue = {
+      questionId: this.form.value.questionId,
+      answerValue: value
+    }
+    this.stepChanged.emit({
+      movement: 'submit',
+      answer: formValue
+    });
+  }
 
 }

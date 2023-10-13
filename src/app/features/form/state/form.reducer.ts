@@ -10,7 +10,9 @@ const initialState: IFormState = {
     allForms: [],
     currentForm: new FormModel(),
     currentAnswers: [],
-    currentQuestionIndex: 0
+    currentQuestionIndex: 0,
+    postSubmissionSuccess: false,
+    postSubmissionError: false
 }
 
 export const formReducer = createReducer(initialState,
@@ -59,34 +61,12 @@ export const formReducer = createReducer(initialState,
         }
     ),
 
-    // // ? updates an answer
-    // on(
-    //     FormActions.updateAnswer,
-    //     (state, action) => {
-    //         const answers = [...state.currentAnswers];
-    //         const actionAnswer = answers.find(a => a.qId == action.answer.qId);
-    //         if (actionAnswer) {
-    //             const index = answers.indexOf(actionAnswer);
-    //             answers[index] = action.answer;
-    //         }
-    //         else {
-    //             answers.push(action.answer);
-    //         }
-
-    //         return {
-    //             ...state,
-    //             currentAnswers: answers
-    //         }
-    //     }
-    // ),
-
-
     // ? updates an answer
     on(
         FormActions.nextStep,
         (state, action) => {
             const answers = [...state.currentAnswers];
-            const actionAnswer = answers.find(a => a.qId == action.answer.qId);
+            const actionAnswer = answers.find(a => a.questionId == action.answer.questionId);
             if (actionAnswer) {
                 const index = answers.indexOf(actionAnswer);
                 answers[index] = action.answer;
@@ -94,7 +74,6 @@ export const formReducer = createReducer(initialState,
             else {
                 answers.push(action.answer);
             }
-
             return {
                 ...state,
                 currentAnswers: answers,
@@ -103,7 +82,7 @@ export const formReducer = createReducer(initialState,
         }
     ),
 
-    // ? updates an answer
+
     on(
         FormActions.previousStep,
         (state) => {
@@ -113,6 +92,55 @@ export const formReducer = createReducer(initialState,
             }
         }
     ),
+
+    on(
+        FormActions.clearCurrentForm,
+        (state) => {
+            return {
+                ...state,
+                currentQuestionIndex: initialState.currentQuestionIndex,
+                currentForm: initialState.currentForm,
+                currentAnswers: initialState.currentAnswers,
+                postSubmissionSuccess: initialState.postSubmissionSuccess,
+                postSubmissionError: initialState.postSubmissionError,
+            }
+        }
+    ),
+
+    on(
+        FormActions.postSubmissionSuccess,
+        (state) => {
+            return {
+                ...state,
+                postSubmissionSuccess: true
+
+            }
+        }
+    ),
+
+    on(
+        FormActions.postSubmissionError,
+        (state) => {
+            return {
+                ...state,
+                postSubmissionError: true
+
+            }
+        }
+    ),
+
+    // on(
+    //     FormActions.postSubmission,
+    //     (state) => {
+    //         return {
+    //             ...state,
+    //             currentQuestionIndex: initialState.currentQuestionIndex,
+    //             currentForm: initialState.currentForm,
+    //             currentAnswers: initialState.currentAnswers
+
+    //         }
+    //     }
+    // ),
 
 
 

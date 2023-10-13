@@ -43,8 +43,8 @@ export class QRadioComponent {
 
   initForm() {
     this.form = this.fb.group({
-      qId: new FormControl(this.questionData.id),
-      answer: new FormControl()
+      questionId: new FormControl(this.questionData.id),
+      answerValue: new FormControl()
     });
   }
 
@@ -61,8 +61,8 @@ export class QRadioComponent {
         default: continue;
       }
     }
-    this.form.get('answer')?.addValidators(validations);
-    this.form.get('answer')?.setValue(false);
+    this.form.get('answerValue')?.addValidators(validations);
+    this.form.get('answerValue')?.setValue(false);
   }
 
 
@@ -76,6 +76,13 @@ export class QRadioComponent {
   priviousStep() {
     this.stepChanged.emit({
       movement: 'previous'
+    });
+  }
+
+  submitSubmission() {
+    this.stepChanged.emit({
+      movement: 'submit',
+      answer: this.form.value
     });
   }
 

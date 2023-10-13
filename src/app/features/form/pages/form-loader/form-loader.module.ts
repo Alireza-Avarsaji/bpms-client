@@ -14,7 +14,7 @@ import { QDateComponent } from 'src/shared/components/Question-templates/q-date/
 import { QTimeComponent } from 'src/shared/components/Question-templates/q-time/q-time.component';
 import { QFileComponent } from 'src/shared/components/Question-templates/q-file/q-file.component';
 import { QRadioComponent } from 'src/shared/components/Question-templates/q-radio/q-radio.component';
-
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 const routes: Routes = [
     {
@@ -34,6 +34,7 @@ const routes: Routes = [
         ReactiveFormsModule,
         NgxSkeletonLoaderModule,
         MatStepperModule,
+        MatSnackBarModule,
         QTextComponent,
         QSingleSelectComponent,
         QMultiSelectComponent,
@@ -41,7 +42,8 @@ const routes: Routes = [
         QDateComponent,
         QFileComponent,
         QRadioComponent,
-        QTimeComponent
+        QTimeComponent,
+        
     ],
     providers: [],
 })

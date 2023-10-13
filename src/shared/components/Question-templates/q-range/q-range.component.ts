@@ -47,8 +47,8 @@ export class QRangeComponent {
 
   initForm() {
     this.form = this.fb.group({
-      qId: new FormControl(this.questionData.id),
-      answer: new FormControl(null)
+      questionId: new FormControl(this.questionData.id),
+      answerValue: new FormControl(null)
     });
 
   }
@@ -68,12 +68,12 @@ export class QRangeComponent {
           break;
         case ValidationTypeEnum.min:
           this.minLimit = +validation.value;  
-          this.form.get('answer')?.setValue(this.minLimit);
+          this.form.get('answerValue')?.setValue(this.minLimit);
           break;
         default: continue;
       }
     }
-    this.form.get('answer')?.addValidators(validations);
+    this.form.get('answerValue')?.addValidators(validations);
   }
 
 
@@ -83,15 +83,30 @@ export class QRangeComponent {
 
 
   nextStep() {
+    const formValue = {
+      ...this.form.value,
+      answerValue: String(this.form.value.answerValue)
+    }
     this.stepChanged.emit({
       movement: 'next',
-      answer: this.form.value
+      answer: formValue
     });
   }
 
   priviousStep() {
     this.stepChanged.emit({
       movement: 'previous'
+    });
+  }
+
+  submitSubmission() {
+    const formValue = {
+      ...this.form.value,
+      answerValue: String(this.form.value.answerValue)
+    }
+    this.stepChanged.emit({
+      movement: 'submit',
+      answer: formValue
     });
   }
 
