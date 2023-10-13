@@ -1,25 +1,15 @@
-<!-- <section class="h-100 w-100 d-flex flex-wrap justify-content-center align-content-start"> -->
+<section class="h-100 w-100 d-flex  flex-wrap justify-content-center align-content-start">
 
-    <!-- <header class="col-12 d-flex flex-wrap justify-content-start align-items-center bg-system_color__purple-3 p-2">
-        <picture class="h-100 ml-3">
-            <img src="../../../assets/images/logo-amir.svg" alt="amirkabir">
-        </picture>
-        <span class="system_color__white">سامانه مدیریت فرایند دانشگاه امیرکبیر</span>
-    </header> -->
-
-    <section class="h-100 w-100 d-flex col-12 col-md-11 col-lg-10 col-xl-9 flex-wrap justify-content-center">
-
-        <p class="title-5 col-12">لیست در خواست ها</p>
-
-        <div class="d-flex col-12 flex-wrap justify-content-start align-content-start p-2">
-            <ng-container *ngIf="forms$ | async as forms">
-                <div class="col-lg-4 col-md-6 col-12 p-2" *ngFor="let form of forms">
-                    <div class="col-12 d-flex flex-wrap align-content-center justify-content-center form-card bg-system_color__white mx-2 mb-5" [routerLink]="['/form', form.id]">
-                        <span class="text-center body-copy-strong pointer">{{form.title}}</span>
-                    </div>
+    
+    <div class="d-flex col-12 col-md-11 col-lg-10 col-xl-9 flex-wrap justify-content-start  align-content-start p-2">
+        <p class="title-5 col-12 mb-4">لیست در خواست ها</p>
+        <ng-container *ngIf="forms$ | async as forms">
+            <div class="col-lg-3 col-md-6 col-12 p-2" *ngFor="let form of forms">
+                <div class="col-12 d-flex flex-wrap align-content-center justify-content-center form-card bg-system_color__white mx-2 mb-5"
+                    [routerLink]="['/form', form.id]">
+                    <span class="text-center body-copy-strong pointer">{{form.title}}</span>
                 </div>
-            </ng-container>
-        </div>
-    </section>
-
-<!-- </section> -->
+            </div>
+        </ng-container>
+    </div>
+</section>
