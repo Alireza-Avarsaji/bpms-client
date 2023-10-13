@@ -5,9 +5,10 @@
         <p class="title-5 col-12 mb-4">لیست در خواست ها</p>
         <ng-container *ngIf="forms$ | async as forms">
             <div class="col-lg-3 col-md-6 col-12 p-2" *ngFor="let form of forms">
-                <div class="col-12 d-flex flex-wrap align-content-center justify-content-center form-card bg-system_color__white mx-2 mb-5"
+                <div class="col-12 d-flex flex-wrap align-content-center justify-content-center form-card bg-system_color__white mx-2 mb-5 p-4"
                     [routerLink]="['/form', form.id]">
-                    <span class="text-center body-copy-strong pointer">{{form.title}}</span>
+                    <span class="col-12 body-copy-strong pointer mb-3">{{form.title}}</span>
+                    <span class="col-12 caption-regular pointer system_color__gray-5">{{form.hint!}}</span>
                 </div>
             </div>
         </ng-container>
