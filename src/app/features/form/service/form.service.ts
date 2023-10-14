@@ -11,7 +11,7 @@ import { FormModel } from '../models/form.model';
 })
 export class FormService {
 
-  apiUrl = 'https://bpms.darkube.app/Form';
+  apiUrl = 'https://bpms2.darkube.app/api/Form';
 
   constructor(private httpclient: HttpClient) { }
 

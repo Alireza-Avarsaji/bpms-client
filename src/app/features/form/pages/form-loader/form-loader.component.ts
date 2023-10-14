@@ -9,7 +9,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionTypesEnum } from '../../models/form.enum';
 import { AnswerModel, UpdateStepperActionModel } from '../../models/submission.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { duration } from 'jalali-moment';
 
 @Component({
   selector: 'app-form-loader',
