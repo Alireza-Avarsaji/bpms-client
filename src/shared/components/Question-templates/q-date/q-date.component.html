@@ -5,6 +5,7 @@
         <input  formControlName="answerValue" class="col-8" matInput [matDatepicker]="date">
         <mat-datepicker-toggle matIconSuffix [for]="date"></mat-datepicker-toggle>
         <mat-datepicker #date></mat-datepicker>
+        <mat-hint *ngIf="questionData.hint">{{questionData.hint}}</mat-hint>
         <mat-error *ngIf="form.controls?.['answerValue']?.hasError('required')">{{formErrorMessages.isRequired}}</mat-error>
     </mat-form-field>
 

@@ -9,7 +9,7 @@
             <input formControlName="answerValue" matSliderThumb>
         </mat-slider>
         <span class="px-2 text-center">{{maxLimit}}</span>
-
+        <mat-hint class="col-12 mt-4" *ngIf="questionData.hint">{{questionData.hint}}</mat-hint>
     </div>
 
     <div class="col-12 d-flex justify-content-between align-items-start">

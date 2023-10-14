@@ -2,8 +2,9 @@
 
 
     <p class="mb-4">{{questionData.key!}}</p>
-    <mat-slide-toggle class="col-12 mb-4" formControlName="answerValue">
+    <mat-slide-toggle class="col-12 mb-2" formControlName="answerValue">
     </mat-slide-toggle>
+    <mat-hint class="mb-3" *ngIf="questionData.hint">{{questionData.hint}}</mat-hint>
 
     <div class="col-12 d-flex justify-content-between align-items-start">
         <button (click)="priviousStep()" [ngClass]="{'invisible': currentStep === 0}" mat-button

@@ -2,6 +2,7 @@
     <p class="mb-4 col-12">{{questionData.key!}}</p>
     <mat-form-field class="col-12 mb-4" appearance="outline">
         <input matInput placeholder="پاسخ کاربر" type="text" formControlName="answerValue">
+        <mat-hint *ngIf="questionData.hint">{{questionData.hint}}</mat-hint>
         <mat-error *ngIf="form.controls['answerValue'].hasError('required')">{{formErrorMessages.isRequired}}</mat-error>
         <mat-error *ngIf="form.controls['answerValue'].hasError('pattern')">{{formErrorMessages.regex}}</mat-error>
         <mat-error *ngIf="form.controls['answerValue'].hasError('maxlength')">{{formErrorMessages.max}}</mat-error>

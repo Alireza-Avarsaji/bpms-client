@@ -1,12 +1,12 @@
 <form [formGroup]="form" class="col-12 d-flex flex-wrap justify-content-between align-content-between">
 
-    <p class="">{{questionData.key!}}</p>
+    <p class="mb-4">{{questionData.key!}}</p>
 
     <!-- ? Upload Image -->
     <div class="col-12 d-flex flex-wrap justify-content-center align-items-center mb-5">
 
 
-        <button mat-stroked-button type="button" class="col-xs-12 rad-5 mb-5"
+        <button mat-stroked-button type="button" class="col-xs-12 rad-5 mb-2"
             (click)="inputUpload.click()">
             <input #inputUpload type="file" class="d-none" (change)="readFile($event)">
             <span class="primary__default d-flex align-items-center">
@@ -18,8 +18,10 @@
             {{'نام فایل: ' + fileName}}
             <mat-icon class="me-2 tertiary__shade-40">check_circle</mat-icon>
         </p>
-        <mat-error *ngIf="form.hasError('max')">{{form.getError('max')}}</mat-error>
-        <mat-error *ngIf="form.hasError('extension')">{{form.getError('extension')}}</mat-error>
+        <mat-error class="col-12 mb-1" *ngIf="form.hasError('max')">{{form.getError('max')}}</mat-error>
+        <mat-error class="col-12 mb-1" *ngIf="form.hasError('extension')">{{form.getError('extension')}}</mat-error>
+        <mat-hint class="col-12" *ngIf="questionData.hint">{{questionData.hint}}</mat-hint>
+
 
     </div>
 
